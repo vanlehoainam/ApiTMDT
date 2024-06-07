@@ -76,16 +76,17 @@ namespace ApiTMDT.Controllers
             await _context.SaveChangesAsync();
             return Ok();
         }
-        [HttpPost("{login}")]
-        public async Task<IActionResult> Login([FromBody] LoginModel login)
+        [HttpPost("SignIn")]
+        public async Task<IActionResult> SignIn(LoginModel signInModel)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == login.Email && u.Password == login.Password);
-            if (user == null)
+            var result = await _context.SignInAsync(signInModel);
+
+            if (string.IsNullOrEmpty(result))
             {
-                return NotFound("Invalid email or password.");
+                return Unauthorized();
             }
 
-            return Ok(user);
+            return Ok(result);
         }
     }
 }
