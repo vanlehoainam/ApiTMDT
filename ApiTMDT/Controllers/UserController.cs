@@ -1,5 +1,6 @@
 ﻿using ApiTMDT.Data;
 using ApiTMDT.Models;
+using ApiTMDT.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ namespace ApiTMDT.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserContext _context;
+        private readonly IAccountRepository accountRepo;
         public UserController(UserContext context)
         {
             _context = context;
@@ -79,7 +81,7 @@ namespace ApiTMDT.Controllers
         [HttpPost("SignIn")]
         public async Task<IActionResult> SignIn(LoginModel signInModel)
         {
-            var result = await _context.SignInAsync(signInModel);
+            var result = await accountRepo.SignInAsync(signInModel);
 
             if (string.IsNullOrEmpty(result))
             {
