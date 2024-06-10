@@ -15,12 +15,14 @@ namespace ApiTMDT.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserContext _context;
-        private readonly IAccountRepository accountRepo;
-        public UserController(UserContext context)
+        private readonly AccountRepository accountRepo;
+
+        public UserController(UserContext context, AccountRepository accountRepository)
         {
             _context = context;
+            this.accountRepo = accountRepository;
         }
-
+     
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -40,6 +42,14 @@ namespace ApiTMDT.Controllers
             await _context.SaveChangesAsync();
             return Ok(empobj); // Return the created user object
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
+        {
+            var user = accountRepo.Authenticate(loginModel.Email, loginModel.Password);
+            return Ok(user);
+        }
+
 
         [HttpPut("{IdUser}")]
         public async Task<IActionResult> Update(int IdUser, [FromBody] UserModel empobj)
@@ -78,17 +88,6 @@ namespace ApiTMDT.Controllers
             await _context.SaveChangesAsync();
             return Ok();
         }
-        [HttpPost("SignIn")]
-        public async Task<IActionResult> SignIn(LoginModel signInModel)
-        {
-            var result = await accountRepo.SignInAsync(signInModel);
-
-            if (string.IsNullOrEmpty(result))
-            {
-                return Unauthorized();
-            }
-
-            return Ok(result);
-        }
+        
     }
 }
