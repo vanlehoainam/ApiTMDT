@@ -1,11 +1,7 @@
-﻿using ApiTMDT.Data;
-using ApiTMDT.Models;
-using ApiTMDT.Repositories;
-using Microsoft.AspNetCore.Http;
+﻿using ApiTMDT.Models;
+using ApiTMDT.Service;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ApiTMDT.Controllers
@@ -14,80 +10,70 @@ namespace ApiTMDT.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserContext _context;
-        private readonly AccountRepository accountRepo;
+        private readonly UserService _userService;
 
-        public UserController(UserContext context, AccountRepository accountRepository)
+        public UserController(UserService userService)
         {
-            _context = context;
-            this.accountRepo = accountRepository;
+            _userService = userService;
         }
-     
+
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            List<UserModel> objCatlist = _context.Users.ToList();
-            return Ok(objCatlist);
+            List<UserModel> users = await _userService.GetAllUsersAsync();
+            return Ok(users);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] UserModel empobj)
+        public async Task<IActionResult> Create([FromBody] UserModel user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await _context.Users.AddAsync(empobj);
-            await _context.SaveChangesAsync();
-            return Ok(empobj); // Return the created user object
+            var createdUser = await _userService.CreateUserAsync(user);
+            return Ok(createdUser);
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
+        public IActionResult Login([FromBody] LoginModel loginModel)
         {
-            var user = accountRepo.Authenticate(loginModel.Email, loginModel.Password);
+            var user = _userService.Authenticate(loginModel.Email, loginModel.Password);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
             return Ok(user);
         }
 
-
         [HttpPut("{IdUser}")]
-        public async Task<IActionResult> Update(int IdUser, [FromBody] UserModel empobj)
+        public async Task<IActionResult> Update(int IdUser, [FromBody] UserModel user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var existingUser = await _context.Users.FindAsync(IdUser);
-            if (existingUser == null)
+            var updatedUser = await _userService.UpdateUserAsync(IdUser, user);
+            if (updatedUser == null)
             {
                 return NotFound();
             }
 
-            // Update user properties
-            existingUser.Name = empobj.Name;
-            existingUser.Email = empobj.Email;
-            // Add other properties as needed
-
-            _context.Users.Update(existingUser);
-            await _context.SaveChangesAsync();
-            return Ok(existingUser);
+            return Ok(updatedUser);
         }
-        
+
         [HttpDelete("{IdUser}")]
         public async Task<IActionResult> Delete(int IdUser)
         {
-            var existingUser = await _context.Users.FindAsync(IdUser);
-            if (existingUser == null)
+            var success = await _userService.DeleteUserAsync(IdUser);
+            if (!success)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(existingUser);
-            await _context.SaveChangesAsync();
             return Ok();
         }
-        
     }
 }

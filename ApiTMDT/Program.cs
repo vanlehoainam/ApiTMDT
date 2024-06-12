@@ -1,5 +1,8 @@
-﻿using ApiTMDT.Data;
+﻿
 using ApiTMDT.Repositories;
+using ApiTMDT.Service;
+using Data;
+using Microsoft.AspNet.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +14,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
-builder.Services.AddScoped<AccountRepository>();
+//builder.Services.AddScoped<AccountRepository>();
+builder.Services.AddScoped<UserService>();
+
+builder.Services.AddScoped<PasswordHasher>(); // hoặc services.AddScoped<Helperss>();
+
 builder.Services.AddDbContext<UserContext>(
     options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")

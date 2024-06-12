@@ -7,23 +7,16 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using ApiTMDT.Data;
+using Data;
 
 namespace ApiTMDT.Repositories
 {
-    public class AccountRepository
+    public interface  AccountRepository
     {
-        private readonly UserContext userContext;
-
-        public AccountRepository(UserContext userContext)
-        {
-            this.userContext = userContext;
-        }
-        public UserModel Authenticate(string email, string password)
-        {
-            var user = userContext.Users.SingleOrDefault(x => x.Email == email && x.Password == password);
-            return user;
-        }
+        void Authenticate(string email, string password);
+        void CreateUserAsync(UserModel user);
+        void UpdateUserAsync(int Id );
+        void DeleteUserAsync(int Id);
     }
 
 }
