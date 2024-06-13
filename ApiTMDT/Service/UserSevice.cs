@@ -34,20 +34,18 @@ namespace ApiTMDT.Service
 
         public async Task<(UserModel, string)> CreateUserAsync(UserModel user)
         {
-            var isEmailExist = await _context.Users.AnyAsync(u => u.Email == user.Email);
-            if (isEmailExist)
-            {
-                throw new BaseException(null, "Email đã tồn tại.");
-            }
 
-            // Kiểm tra username trùng lặp
             var isUsernameExist = await _context.Users.AnyAsync(u => u.UserName == user.UserName);
             if (isUsernameExist)
             {
-                throw new BaseException(ErrorsMessage.MSG_USERNAME_EXISTS, "Username đã tồn tại.");
+                throw new BaseException("Username đã tồn tại.");
             }
 
-
+            var isEmailExist = await _context.Users.AnyAsync(u => u.Email == user.Email);
+            if (isEmailExist)
+            {
+                throw new BaseException("Email đã tồn tại.");
+            }                  
             user.Password = PasswordHelper.HashPassword(user.Password);
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
