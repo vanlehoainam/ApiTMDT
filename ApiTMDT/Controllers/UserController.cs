@@ -1,5 +1,6 @@
 ﻿using ApiTMDT.Models;
 using ApiTMDT.Service;
+using Fluent.Infrastructure.FluentModel;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,9 +19,9 @@ namespace ApiTMDT.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 5)
         {
-            List<UserModel> users = await _userService.GetAllUsersAsync();
+            var users = await _userService.GetAllUsersAsync(pageNumber, pageSize);
             return Ok(users);
         }
 
@@ -33,17 +34,14 @@ namespace ApiTMDT.Controllers
             }
 
             var createdUser = await _userService.CreateUserAsync(user);
-            return Ok(createdUser);
+            return Ok(user);
         }
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginModel loginModel)
         {
-            var user = _userService.Authenticate(loginModel.Email, loginModel.Password);
-            if (user == null)
-            {
-                return Unauthorized();
-            }
+            var user = _userService.Authenticate(loginModel.Email, loginModel.Password);         
+          
             return Ok(user);
         }
 

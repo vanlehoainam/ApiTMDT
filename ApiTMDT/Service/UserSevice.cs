@@ -16,9 +16,12 @@ namespace ApiTMDT.Service
         {
             _context = context;
         }
-        public async Task<List<UserModel>> GetAllUsersAsync()
+        public async Task<List<UserModel>> GetAllUsersAsync(int pageNumber = 1, int pageSize = 5)
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+               .ToListAsync();
         }
         public UserModel Authenticate(string email, string password)
         {
@@ -28,13 +31,16 @@ namespace ApiTMDT.Service
             return user;
         }
 
-        public async Task<UserModel> CreateUserAsync(UserModel user)
+        public async Task<(UserModel, string)> CreateUserAsync(UserModel user)
         {
+          
+
             user.Password = PasswordHelper.HashPassword(user.Password);
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
-            return user;
+            return (user, "Người dùng đã được tạo thành công.");
         }
+
 
         public async Task<bool> DeleteUserAsync(int userId)
         {
