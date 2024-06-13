@@ -34,7 +34,11 @@ namespace ApiTMDT.Controllers
             }
 
             var createdUser = await _userService.CreateUserAsync(user);
-            return Ok(user);
+            return Ok(new
+            {
+                data = user,
+                Message = "Người dùng đã được tạo thành công."
+            });
         }
 
         [HttpPost("login")]
