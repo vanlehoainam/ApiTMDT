@@ -36,15 +36,15 @@ namespace ApiTMDT.Service
         {
 
             var isUsernameExist = await _context.Users.AnyAsync(u => u.UserName == user.UserName);
-            if (isUsernameExist)
+            if (!isUsernameExist)
             {
-                throw new BaseException(ErrorsMessage.MSG_NOT_EXIST);
+                throw new BaseException(ErrorsMessage.MSG_USER_DA_TON_TAI);
             }
 
             var isEmailExist = await _context.Users.AnyAsync(u => u.Email == user.Email);
-            if (isEmailExist)
+            if (!isEmailExist)
             {
-                throw new BaseException(ErrorsMessage.MSG_NOT_EXIST);
+                throw new BaseException(ErrorsMessage.MSG_EMAIL_DA_TON_TAI);
             }
             user.Password = PasswordHelper.HashPassword(user.Password);
             await _context.Users.AddAsync(user);
@@ -83,8 +83,8 @@ namespace ApiTMDT.Service
         }
         public static class ErrorsMessage
         {
-            public const string MSG_NOT_EXIST = "đã tồn tại hãy nhập lại ";
-
+            public const string MSG_USER_DA_TON_TAI = "Địa chỉ email đã tồn tại.";
+            public const string MSG_EMAIL_DA_TON_TAI = "Địa chỉ email đã tồn tại.";
         }
     }
 }
