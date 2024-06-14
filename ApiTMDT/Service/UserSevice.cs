@@ -9,7 +9,7 @@ using EO.Base;
 
 namespace ApiTMDT.Service
 {
-    public class UserService 
+    public class UserService
     {
         private readonly UserContext _context;
 
@@ -38,14 +38,14 @@ namespace ApiTMDT.Service
             var isUsernameExist = await _context.Users.AnyAsync(u => u.UserName == user.UserName);
             if (isUsernameExist)
             {
-                throw new BaseException("Username đã tồn tại.");
+                throw new BaseException(ErrorsMessage.MSG_NOT_EXIST);
             }
 
             var isEmailExist = await _context.Users.AnyAsync(u => u.Email == user.Email);
             if (isEmailExist)
             {
-                throw new BaseException("Email đã tồn tại.");
-            }                  
+                throw new BaseException(ErrorsMessage.MSG_NOT_EXIST);
+            }
             user.Password = PasswordHelper.HashPassword(user.Password);
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
@@ -81,6 +81,10 @@ namespace ApiTMDT.Service
             await _context.SaveChangesAsync();
             return existingUser;
         }
+        public static class ErrorsMessage
+        {
+            public const string MSG_NOT_EXIST = "đã tồn tại hãy nhập lại ";
 
-    } 
+        }
+    }
 }
