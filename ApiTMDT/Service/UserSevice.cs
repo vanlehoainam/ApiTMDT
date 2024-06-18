@@ -71,12 +71,12 @@ namespace ApiTMDT.Service
             return (user, "Tạo user thành công.");
         }
 
-        public async Task<(UserModel user, string message)> UpdateUserAsync(int Id, UserModel userUpdate)
+        public async Task<(UserModel originalUser, UserModel updatedUser, string message)> UpdateUserAsync(int Id, UserModel userUpdate)
         {
             var existingUser = await _context.Users.FindAsync(Id);
             if (existingUser == null)
             {
-                return (null, "User không tồn tại.");
+                return (null, null, "User không tồn tại.");
             }
 
             var userWithSameUsername = await _context.Users
@@ -84,7 +84,7 @@ namespace ApiTMDT.Service
 
             if (userWithSameUsername != null)
             {
-                return (null, "Username đã tồn tại.");
+                return (null, null, "Username đã tồn tại.");
             }
 
             var userWithSameEmail = await _context.Users
@@ -92,8 +92,15 @@ namespace ApiTMDT.Service
 
             if (userWithSameEmail != null)
             {
-                return (null, "Email đã tồn tại.");
+                return (null, null, "Email đã tồn tại.");
             }
+
+            var originalUser = new UserModel
+            {
+                Id = existingUser.Id,
+                UserName = existingUser.UserName,
+                Email = existingUser.Email
+            };
 
             existingUser.UserName = userUpdate.UserName;
             existingUser.Email = userUpdate.Email;
@@ -101,7 +108,7 @@ namespace ApiTMDT.Service
             _context.Users.Update(existingUser);
             await _context.SaveChangesAsync();
 
-            return (existingUser, "Cập nhật user thành công.");
+            return (originalUser, existingUser, "Cập nhật user thành công.");
         }
 
         public async Task<DeleteUserResponse> DeleteUserAsync(int id)

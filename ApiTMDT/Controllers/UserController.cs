@@ -70,24 +70,25 @@ namespace ApiTMDT.Controllers
 
         }
 
-        [HttpPut("{Id}")]
+        [HttpPut("Update")]
         public async Task<IActionResult> Update(int Id, [FromBody] UserModel user)
         {
             var result = await _userService.UpdateUserAsync(Id, user);
 
-            if (result.user == null)
+            if (result.updatedUser == null)
             {
                 return BadRequest(new { message = result.message });
             }
 
             return Ok(new
             {
-                data = result.user,
+                originalData = result.originalUser,
+                data = result.updatedUser,
                 message = result.message
             });
         }
 
-        [HttpDelete("{Id}")]
+        [HttpDelete("Delete")]
         public async Task<IActionResult> Delete(int Id)
         {
             var result = await _userService.DeleteUserAsync(Id);
