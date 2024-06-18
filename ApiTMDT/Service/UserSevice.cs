@@ -31,12 +31,18 @@ namespace ApiTMDT.Service
 
         public async Task<(UserModel user, string message)> LoginAsync(string emailorusername, string Password)
         {
-
+            if (string.IsNullOrWhiteSpace(emailorusername) || string.IsNullOrWhiteSpace(Password))
+            {
+                return (null, "Email/Username và mật khẩu không được để trống.");
+            }
 
             var user = await _context.Users
-                .Select(x => new UserModel { Email = x.Email, UserName = x.UserName, Password = x.Password })
-                .Where(x => (x.Email == emailorusername || x.UserName == emailorusername) && x.Password == Password)
-                .SingleOrDefaultAsync();
+                .SingleOrDefaultAsync(x => (x.Email == emailorusername || x.UserName == emailorusername) && x.Password == Password);
+
+            if (user == null)
+            {
+                return (null, "Thông tin đăng nhập không chính xác.");
+            }
 
             return (user, "Đăng nhập thành công.");
         }

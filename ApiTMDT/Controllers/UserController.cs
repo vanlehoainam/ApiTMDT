@@ -55,13 +55,17 @@ namespace ApiTMDT.Controllers
         public async Task<IActionResult> Login(string emailorusername ,string Password)
         {
            
-                var (user, message) = await _userService.LoginAsync(emailorusername, Password);
-                if (user == null)
-                {
-                    return BadRequest(new { message });
-                }
+                var result = await _userService.LoginAsync(emailorusername, Password);
+            if (result.user == null)
+            {
+                return BadRequest(new { message = result.message });
+            }
 
-                return Ok(new { data = user, message });
+            return Ok(new
+            {
+                data = result.user,
+                message = result.message
+            }); ;
 
 
         }
