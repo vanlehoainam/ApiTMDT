@@ -6,10 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Linq;
 using EO.Base;
+using Microsoft.AspNet.Identity;
+using static ApiTMDT.Service.UserService;
 
 namespace ApiTMDT.Service
 {
-    public class UserService
+  
+    public class UserService 
     {
         private readonly UserContext _context;
 
@@ -17,61 +20,73 @@ namespace ApiTMDT.Service
         {
             _context = context;
         }
+
         public async Task<List<UserModel>> GetAllUsersAsync(int pageNumber = 1, int pageSize = 5)
         {
             return await _context.Users
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-               .ToListAsync();
-        }
-        public UserModel Authenticate(string email, string password)
-        {
-            var hashedPassword = PasswordHelper.HashPassword(password);
-            var user = _context.Users.SingleOrDefault(x => x.Email == email && x.Password == hashedPassword);
-
-            return user;
+                .ToListAsync();
         }
 
-        public async Task<(UserModel, string)> CreateUserAsync(UserModel user)
+        public async Task<(UserModel user, string message)> LoginAsync(string emailorusername, string Password)
         {
 
-            var isUsernameExist = await _context.Users.AnyAsync(u => u.UserName == user.UserName);
-            if (!isUsernameExist)
+
+            var user = await _context.Users
+                .Select(x => new UserModel { Email = x.Email, UserName = x.UserName, Password = x.Password })
+                .Where(x => (x.Email == emailorusername || x.UserName == emailorusername) && x.Password == Password)
+                .SingleOrDefaultAsync();
+
+            return (user, "Đăng nhập thành công.");
+        }
+
+        public async Task<(UserModel user, string message)> CreateUserAsync(UserModel user)
+        {
+            var existingUserByUsername = await _context.Users
+           .FirstOrDefaultAsync(u => u.UserName == user.UserName);
+
+            if (existingUserByUsername != null)
             {
-                throw new BaseException(ErrorsMessage.MSG_USER_DA_TON_TAI);
+                return (null, "Username đã tồn tại.");
             }
 
-            var isEmailExist = await _context.Users.AnyAsync(u => u.Email == user.Email);
-            if (!isEmailExist)
+            var existingUserByEmail = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == user.Email);
+
+            if (existingUserByEmail != null)
             {
-                throw new BaseException(ErrorsMessage.MSG_EMAIL_DA_TON_TAI);
+                return (null, "Email đã tồn tại.");
             }
-            user.Password = PasswordHelper.HashPassword(user.Password);
-            await _context.Users.AddAsync(user);
+
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
-            return (user, "Người dùng đã được tạo thành công.");
+
+            return (user, "Tạo user thành công.");
         }
 
-
-        public async Task<bool> DeleteUserAsync(int userId)
+        public async Task<(UserModel user, string message)> UpdateUserAsync(int Id, UserModel userUpdate)
         {
-            var existingUser = await _context.Users.FindAsync(userId);
+            var existingUser = await _context.Users.FindAsync(Id);
             if (existingUser == null)
             {
-                return false;
+                return (null, "User không tồn tại.");
             }
 
-            _context.Users.Remove(existingUser);
-            await _context.SaveChangesAsync();
-            return true;
-        }
+            var userWithSameUsername = await _context.Users
+                .FirstOrDefaultAsync(u => u.UserName == userUpdate.UserName && u.Id != Id);
 
-        public async Task<UserModel> UpdateUserAsync(int userId, UserModel userUpdate)
-        {
-            var existingUser = await _context.Users.FindAsync(userId);
-            if (existingUser == null)
+            if (userWithSameUsername != null)
             {
-                return null;
+                return (null, "Username đã tồn tại.");
+            }
+
+            var userWithSameEmail = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == userUpdate.Email && u.Id != Id);
+
+            if (userWithSameEmail != null)
+            {
+                return (null, "Email đã tồn tại.");
             }
 
             existingUser.UserName = userUpdate.UserName;
@@ -79,12 +94,36 @@ namespace ApiTMDT.Service
 
             _context.Users.Update(existingUser);
             await _context.SaveChangesAsync();
-            return existingUser;
+
+            return (existingUser, "Cập nhật user thành công.");
         }
-        public static class ErrorsMessage
+
+        public async Task<DeleteUserResponse> DeleteUserAsync(int id)
         {
-            public const string MSG_USER_DA_TON_TAI = "Địa chỉ email đã tồn tại.";
-            public const string MSG_EMAIL_DA_TON_TAI = "Địa chỉ email đã tồn tại.";
+            var existingUser = await _context.Users.FindAsync(id);
+            if (existingUser == null)
+            {
+                return new DeleteUserResponse
+                {
+                    Success = false,
+                    Message = "Không tìm thấy user"
+                };
+            }
+
+            _context.Users.Remove(existingUser);
+            await _context.SaveChangesAsync();
+
+            return new DeleteUserResponse
+            {
+                Success = true,
+                Message = "Xóa thành công"
+            };
+        }
+
+        public class DeleteUserResponse
+        {
+            public bool Success { get; set; }
+            public string Message { get; set; }
         }
     }
 }

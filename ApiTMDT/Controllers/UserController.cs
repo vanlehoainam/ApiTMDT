@@ -1,8 +1,12 @@
-﻿using ApiTMDT.Models;
+﻿using ApiTMDT.Helpers;
+using ApiTMDT.Models;
 using ApiTMDT.Service;
+using Data;
 using Fluent.Infrastructure.FluentModel;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Threading.Tasks;
 
 namespace ApiTMDT.Controllers
@@ -13,69 +17,83 @@ namespace ApiTMDT.Controllers
     {
         private readonly UserService _userService;
 
-        public UserController(UserService userService)
+        private readonly UserContext _context;
+
+
+        public UserController(UserService userService, UserContext context)
         {
             _userService = userService;
+            _context = context;
+
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 5)
         {
             var users = await _userService.GetAllUsersAsync(pageNumber, pageSize);
             return Ok(users);
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] UserModel user)
         {
-            if (!ModelState.IsValid)
+            var result = await _userService.CreateUserAsync(user);
+
+            if (result.user == null)
             {
-                return BadRequest(ModelState);
+                return BadRequest(new { message = result.message });
             }
 
-            var createdUser = await _userService.CreateUserAsync(user);
             return Ok(new
             {
-                data = user,
-                Message = "Người dùng đã được tạo thành công."
+                data = result.user,
+                message = result.message
             });
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginModel loginModel)
+        public async Task<IActionResult> Login(string emailorusername ,string Password)
         {
-            var user = _userService.Authenticate(loginModel.Email, loginModel.Password);         
-          
-            return Ok(user);
+           
+                var (user, message) = await _userService.LoginAsync(emailorusername, Password);
+                if (user == null)
+                {
+                    return BadRequest(new { message });
+                }
+
+                return Ok(new { data = user, message });
+
+
         }
 
-        [HttpPut("{IdUser}")]
-        public async Task<IActionResult> Update(int IdUser, [FromBody] UserModel user)
+        [HttpPut("{Id}")]
+        public async Task<IActionResult> Update(int Id, [FromBody] UserModel user)
         {
-            if (!ModelState.IsValid)
+            var result = await _userService.UpdateUserAsync(Id, user);
+
+            if (result.user == null)
             {
-                return BadRequest(ModelState);
+                return BadRequest(new { message = result.message });
             }
 
-            var updatedUser = await _userService.UpdateUserAsync(IdUser, user);
-            if (updatedUser == null)
+            return Ok(new
             {
-                return NotFound();
-            }
-
-            return Ok(updatedUser);
+                data = result.user,
+                message = result.message
+            });
         }
 
-        [HttpDelete("{IdUser}")]
-        public async Task<IActionResult> Delete(int IdUser)
+        [HttpDelete("{Id}")]
+        public async Task<IActionResult> Delete(int Id)
         {
-            var success = await _userService.DeleteUserAsync(IdUser);
-            if (!success)
+            var result = await _userService.DeleteUserAsync(Id);
+
+            if (!result.Success)
             {
-                return NotFound();
+                return BadRequest(new { message = result.Message });
             }
 
-            return Ok();
+            return Ok(new { message = result.Message });
         }
     }
 }

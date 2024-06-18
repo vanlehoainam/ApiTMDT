@@ -7,6 +7,8 @@ namespace ApiTMDT.Models
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+        [Required]
+        public string UserName { get; set; }
 
         [Required]
         [MinLength(8)]
