@@ -41,8 +41,14 @@ namespace ApiTMDT.Service
 
             if (user == null)
             {
-                return (null, "Thông tin đăng nhập không chính xác.");
+                return (null, "Thông tin đăng nhập không chính xác .");
             }
+            /*bool isPasswordValid = PasswordHelper.VerifyPassword(Password, user.Password);
+
+            if (!isPasswordValid)
+            {
+                return (null, "Mật khẩu đăng nhập không chính xác.");
+            }*/
 
             return (user, "Đăng nhập thành công.");
         }
@@ -64,7 +70,7 @@ namespace ApiTMDT.Service
             {
                 return (null, "Email đã tồn tại.");
             }
-
+            user.Password = PasswordHelper.HashPassword(user.Password);
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
