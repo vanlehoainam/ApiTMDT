@@ -17,7 +17,7 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.Al
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<PasswordHasher>(); // hoặc services.AddScoped<Helperss>();
 
-builder.Services.AddDbContext<UserContext>(
+builder.Services.AddDbContext<ApiDbContext>(
     options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
         ));

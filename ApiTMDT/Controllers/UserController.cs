@@ -17,10 +17,10 @@ namespace ApiTMDT.Controllers
     {
         private readonly UserService _userService;
 
-        private readonly UserContext _context;
+        private readonly ApiDbContext _context;
 
 
-        public UserController(UserService userService, UserContext context)
+        public UserController(UserService userService, ApiDbContext context)
         {
             _userService = userService;
             _context = context;

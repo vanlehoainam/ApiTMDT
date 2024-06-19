@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ApiTMDT.Migrations
 {
-    [DbContext(typeof(UserContext))]
+    [DbContext(typeof(ApiDbContext))]
     [Migration("20240610045002_initial")]
     partial class initial
     {

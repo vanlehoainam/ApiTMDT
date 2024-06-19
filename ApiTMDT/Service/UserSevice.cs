@@ -14,9 +14,9 @@ namespace ApiTMDT.Service
   
     public class UserService 
     {
-        private readonly UserContext _context;
+        private readonly ApiDbContext _context;
 
-        public UserService(UserContext context)
+        public UserService(ApiDbContext context)
         {
             _context = context;
         }
@@ -29,22 +29,21 @@ namespace ApiTMDT.Service
                 .ToListAsync();
         }
 
-        public async Task<(UserModel user, string message)> LoginAsync(string emailorusername, string Password)
+        public async Task<(UserModel user, string message)> LoginAsync(string emailorusername, string password)
         {
-            if (string.IsNullOrWhiteSpace(emailorusername) || string.IsNullOrWhiteSpace(Password))
+            if (string.IsNullOrWhiteSpace(emailorusername) || string.IsNullOrWhiteSpace(password))
             {
                 return (null, "Email/Username và mật khẩu không được để trống.");
             }
 
             var user = await _context.Users
-                .SingleOrDefaultAsync(x => (x.Email == emailorusername || x.UserName == emailorusername) && x.Password == Password);
+                .SingleOrDefaultAsync(x => (x.Email == emailorusername || x.UserName == emailorusername) && x.Password == password);
 
             if (user == null)
             {
                 return (null, "Thông tin đăng nhập không chính xác .");
             }
-            /*bool isPasswordValid = PasswordHelper.VerifyPassword(Password, user.Password);
-
+           /* bool isPasswordValid = PasswordHelper.VerifyPassword(password, user.Password);
             if (!isPasswordValid)
             {
                 return (null, "Mật khẩu đăng nhập không chính xác.");
