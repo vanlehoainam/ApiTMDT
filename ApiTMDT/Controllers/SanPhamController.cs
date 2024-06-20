@@ -76,9 +76,9 @@ namespace ApiTMDT.Controllers
             return Ok(new { message = result.Message });
         }
         [HttpGet("Search")]
-        public async Task<IActionResult> Search([FromQuery] string name, [FromQuery] decimal? minPrice, [FromQuery] decimal? maxPrice)
+        public async Task<IActionResult> Search([FromQuery] string nameorPrice)
         {
-            var result = await _sanPhamService.SearchSanPhamAsync(name, minPrice, maxPrice);
+            var result = await _sanPhamService.SearchSanPhamAsync(nameorPrice);
 
             if (!result.sanPhams.Any())
             {

@@ -26,7 +26,7 @@ namespace ApiTMDT.Service
                 .ToListAsync();
         }
 
-        public async Task<(SanPhamModel sanPham, string message)> CreateSanPhamAsync(SanPhamModel sanPham)
+        public async Task<(SanPhamModel sanPham, string message)> CreateSanPhamAsync(SanPhamModel sanPham, IFormFile imageFile)
         {
             var existingSanPhamByName = await _context.SanPham
                 .FirstOrDefaultAsync(sp => sp.Ten_SP == sanPham.Ten_SP);
@@ -34,6 +34,14 @@ namespace ApiTMDT.Service
             if (existingSanPhamByName != null)
             {
                 return (null, "Tên sản phẩm đã tồn tại.");
+            }
+            if (imageFile != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await imageFile.CopyToAsync(memoryStream);
+                    sanPham.Anh_SP = memoryStream.ToArray();
+                }
             }
 
             _context.SanPham.Add(sanPham);
@@ -98,23 +106,20 @@ namespace ApiTMDT.Service
             };
         }
 
-        public async Task<(List<SanPhamModel> sanPhams, string message)> SearchSanPhamAsync(string name, decimal? minPrice, decimal? maxPrice)
+        public async Task<(List<SanPhamModel> sanPhams, string message)> SearchSanPhamAsync(string nameorPrice)
         {
             var query = _context.SanPham.AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(name))
+            if (!string.IsNullOrWhiteSpace(nameorPrice))
             {
-                query = query.Where(sp => sp.Ten_SP.Contains(name));
-            }
-
-            if (minPrice.HasValue)
-            {
-                query = query.Where(sp => sp.Gia >= minPrice.Value);
-            }
-
-            if (maxPrice.HasValue)
-            {
-                query = query.Where(sp => sp.Gia <= maxPrice.Value);
+                if (decimal.TryParse(nameorPrice, out decimal price))
+                {
+                    query = query.Where(sp => sp.Gia == price);
+                }
+                else
+                {
+                    query = query.Where(sp => sp.Ten_SP.Contains(nameorPrice));
+                }
             }
 
             var sanPhams = await query.ToListAsync();
@@ -126,6 +131,7 @@ namespace ApiTMDT.Service
 
             return (sanPhams, "Tìm kiếm thành công.");
         }
+
 
 
         public class DeleteSanPhamResponse

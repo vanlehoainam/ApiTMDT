@@ -15,8 +15,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 //builder.Services.AddScoped<AccountRepository>();
 builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<PasswordHasher>(); // hoặc services.AddScoped<Helperss>();
-
+builder.Services.AddScoped<PasswordHasher>(); 
+builder.Services.AddScoped<SanPhamService>();
 builder.Services.AddDbContext<ApiDbContext>(
     options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")

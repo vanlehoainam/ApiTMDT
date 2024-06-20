@@ -14,7 +14,7 @@ namespace ApiTMDT.Models
         public decimal Gia { get; set; }
 
         [Required]
-        public string Anh_SP { get; set; }
+        public byte[] Anh_SP { get; set; }
 
         [Required]
         public int SoLuong { get; set; }
