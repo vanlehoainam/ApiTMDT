@@ -22,16 +22,16 @@ namespace ApiTMDT.Controllers
         }
 
         [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 5)
+        public async Task<IActionResult> GetAll()
         {
-            var sanPhams = await _sanPhamService.GetAllSanPhamsAsync(pageNumber, pageSize);
+            var sanPhams = await _sanPhamService.GetAllSanPhamsAsync();
             return Ok(sanPhams);
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromBody] SanPhamModel sanPham)
+        public async Task<IActionResult> Create([FromForm] SanPhamModel sanPham,  IFormFile imageFile)
         {
-            var result = await _sanPhamService.CreateSanPhamAsync(sanPham);
+            var result = await _sanPhamService.CreateSanPhamAsync(sanPham, imageFile);
 
             if (result.sanPham == null)
             {

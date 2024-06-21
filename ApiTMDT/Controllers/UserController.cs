@@ -28,9 +28,9 @@ namespace ApiTMDT.Controllers
         }
 
         [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 5)
+        public async Task<IActionResult> GetAll()
         {
-            var users = await _userService.GetAllUsersAsync(pageNumber, pageSize);
+            var users = await _userService.GetAllUsersAsync();
             return Ok(users);
         }
 

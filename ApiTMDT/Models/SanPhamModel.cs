@@ -13,7 +13,6 @@ namespace ApiTMDT.Models
         [Required]
         public decimal Gia { get; set; }
 
-        [Required]
         public byte[] Anh_SP { get; set; }
 
         [Required]

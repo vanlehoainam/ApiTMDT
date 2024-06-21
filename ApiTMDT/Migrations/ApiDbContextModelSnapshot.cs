@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiTMDT.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    partial class ApiDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -29,9 +29,9 @@ namespace ApiTMDT.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Anh_SP")
+                    b.Property<byte[]>("Anh_SP")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("GhiChu")
                         .IsRequired()
