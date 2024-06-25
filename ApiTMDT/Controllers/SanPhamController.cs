@@ -29,9 +29,18 @@ namespace ApiTMDT.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromForm] SanPhamModel sanPham,  IFormFile imageFile)
+        public async Task<IActionResult> Create([FromForm] CreateSP createSP)
         {
-            var result = await _sanPhamService.CreateSanPhamAsync(sanPham, imageFile);
+            var sanPham = new SanPhamModel
+            {
+                Ten_SP = createSP.Ten_SP,
+                Gia = createSP.Gia,
+                SoLuong = createSP.SoLuong,
+                GhiChu = createSP.GhiChu ,
+                ImageFile = createSP.ImageFile
+            };
+
+            var result = await _sanPhamService.CreateSanPhamAsync(sanPham, createSP.ImageFile);
 
             if (result.sanPham == null)
             {
@@ -44,7 +53,6 @@ namespace ApiTMDT.Controllers
                 message = result.message
             });
         }
-
         [HttpPut("Update")]
         public async Task<IActionResult> Update(int Id, [FromBody] SanPhamModel sanPham)
         {

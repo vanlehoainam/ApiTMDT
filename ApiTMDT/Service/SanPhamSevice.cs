@@ -35,12 +35,35 @@ namespace ApiTMDT.Service
             {
                 return (null, "Tên sản phẩm đã tồn tại.");
             }
+
+            if (imageFile == null && string.IsNullOrEmpty(sanPham.Anh_SP))
+            {
+                return (null, "Bạn phải nhập ảnh sản phẩm hoặc chọn tệp ảnh.");
+            }
+
             if (imageFile != null)
             {
-                using (var memoryStream = new MemoryStream())
+                if (imageFile.Length > 0)
                 {
-                    await imageFile.CopyToAsync(memoryStream);
-                    sanPham.Anh_SP = memoryStream.ToArray();
+                    var fileExtension = Path.GetExtension(imageFile.FileName).ToLower();
+                    if (fileExtension != ".jpg" && fileExtension != ".jpeg")
+                    {
+                        return (null, "File ảnh phải có định dạng JPG.");
+                    }
+
+                    var fileName = $"{Guid.NewGuid()}{fileExtension}";
+                    var filePath = Path.Combine("Data/images", fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(stream);
+                    }
+
+                    sanPham.Anh_SP = $"/images/{fileName}";
+                }
+                else
+                {
+                    return (null, "File ảnh không hợp lệ.");
                 }
             }
 
@@ -49,7 +72,6 @@ namespace ApiTMDT.Service
 
             return (sanPham, "Tạo sản phẩm thành công.");
         }
-
         public async Task<(SanPhamModel originalSanPham, SanPhamModel updatedSanPham, string message)> UpdateSanPhamAsync(int id, SanPhamModel sanPhamUpdate)
         {
             var existingSanPham = await _context.SanPham.FindAsync(id);

@@ -29,9 +29,9 @@ namespace ApiTMDT.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<byte[]>("Anh_SP")
+                    b.Property<string>("Anh_SP")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GhiChu")
                         .IsRequired()
