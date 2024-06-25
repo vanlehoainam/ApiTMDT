@@ -37,17 +37,18 @@ namespace ApiTMDT.Service
             }
 
             var user = await _context.Users
-                .SingleOrDefaultAsync(x => (x.Email == emailorusername || x.UserName == emailorusername) && x.Password == password);
+                .SingleOrDefaultAsync(x => x.Email == emailorusername || x.UserName == emailorusername);
 
             if (user == null)
             {
-                return (null, "Thông tin đăng nhập không chính xác .");
+                return (null, "Thông tin đăng nhập không chính xác.");
             }
-           /* bool isPasswordValid = PasswordHelper.VerifyPassword(password, user.Password);
+
+            bool isPasswordValid = PasswordHelper.VerifyPassword(password, user.Password);
             if (!isPasswordValid)
             {
                 return (null, "Mật khẩu đăng nhập không chính xác.");
-            }*/
+            }
 
             return (user, "Đăng nhập thành công.");
         }
