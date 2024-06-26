@@ -4,6 +4,7 @@ using ApiTMDT.Service;
 using Data;
 using Microsoft.AspNet.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.Design.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -19,6 +20,8 @@ builder.Services.AddCors(options => options.AddDefaultPolicy
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<PasswordHasher>(); 
 builder.Services.AddScoped<SanPhamService>();
+builder.Services.AddScoped<NhanVienSevice>();
+
 builder.Services.AddDbContext<ApiDbContext>(
     options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
