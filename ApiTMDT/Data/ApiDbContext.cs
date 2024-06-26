@@ -10,6 +10,11 @@ namespace Data
         }
         public DbSet <UserModel> Users { get; set; }
         public DbSet<SanPhamModel> SanPham { get; set; }
+        public DbSet<NhanVien> NhanVien { get; set; }
+        public DbSet<PhongBan> PhongBan { get; set; }
+        public DbSet<TrinhDoHocVan> TrinhDoHocVan { get; set; }
+        public DbSet<HopDongLaoDong> HopDongLaoDong { get; set; }
+
 
     }
 }
