@@ -29,7 +29,6 @@ namespace ApiTMDT.Service
 
         public async Task<(NhanVien nhanVien, string message)> CreateNhanVienAsync(NhanVien nhanVien)
         {
-            // Kiểm tra nếu tên nhân viên đã tồn tại
             var existingNhanVienByName = await _context.NhanVien
                 .FirstOrDefaultAsync(nv => nv.HoTen == nhanVien.HoTen);
 
@@ -38,7 +37,6 @@ namespace ApiTMDT.Service
                 return (null, "Tên nhân viên đã tồn tại.");
             }
 
-            // Kiểm tra các trường bắt buộc
             if (string.IsNullOrEmpty(nhanVien.HoTen) ||
                        nhanVien.CCCD == 0 ||
                 string.IsNullOrEmpty(nhanVien.DiaChi) ||
@@ -52,7 +50,6 @@ namespace ApiTMDT.Service
                 return (null, "Vui lòng điền đầy đủ thông tin bắt buộc.");
             }
 
-            // Thêm nhân viên mới vào cơ sở dữ liệu
             _context.NhanVien.Add(nhanVien);
             await _context.SaveChangesAsync();
 

@@ -34,8 +34,22 @@ namespace ApiTMDT.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromBody] NhanVien nhanVien)
+        public async Task<IActionResult> Create([FromForm] CreateNhanVien createNhanVien)
         {
+            var nhanVien = new NhanVien
+            {
+                MaNV = createNhanVien.MaNV,
+                HoTen = createNhanVien.HoTen,
+                CCCD = createNhanVien.CCCD,
+                DiaChi = createNhanVien.DiaChi,
+                GioiTinh = createNhanVien.GioiTinh,
+                QueQuan = createNhanVien.QueQuan,
+                NgaySinh = createNhanVien.NgaySinh,
+                SoDienThoai = createNhanVien.SoDienThoai,
+                Email = createNhanVien.Email,
+                Luong = createNhanVien.Luong
+            };
+
             var result = await _nhanVienService.CreateNhanVienAsync(nhanVien);
 
             if (result.nhanVien == null)
@@ -97,13 +111,6 @@ namespace ApiTMDT.Controllers
                 message = result.message
             });
         }
-
-        // HocVan
-        
-        // HopDongLaoDong
-       
-
-        // PhongBan
         
     }
 }
