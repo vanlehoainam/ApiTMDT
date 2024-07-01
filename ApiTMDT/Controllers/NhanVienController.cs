@@ -3,6 +3,7 @@ using ApiTMDT.Service;
 using Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace ApiTMDT.Controllers
 {
@@ -11,11 +12,17 @@ namespace ApiTMDT.Controllers
     public class NhanVienController : ControllerBase
     {
         private readonly NhanVienSevice _nhanVienService;
+        private readonly HocVanService _hocVanService;
+        private readonly HopDongLaoDongService _hopDongLaoDongService;
+        private readonly PhongBanService _phongBanService;
         private readonly ApiDbContext _context;
 
-        public NhanVienController(NhanVienSevice nhanVienService, ApiDbContext context)
+        public NhanVienController(NhanVienSevice nhanVienService, HocVanService hocVanService, HopDongLaoDongService hopDongLaoDongService, PhongBanService phongBanService, ApiDbContext context)
         {
             _nhanVienService = nhanVienService;
+            _hocVanService = hocVanService;
+            _hopDongLaoDongService = hopDongLaoDongService;
+            _phongBanService = phongBanService;
             _context = context;
         }
 
@@ -90,5 +97,13 @@ namespace ApiTMDT.Controllers
                 message = result.message
             });
         }
+
+        // HocVan
+        
+        // HopDongLaoDong
+       
+
+        // PhongBan
+        
     }
 }
