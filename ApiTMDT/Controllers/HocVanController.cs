@@ -16,16 +16,24 @@ namespace ApiTMDT.Controllers
             _hocVanService = hocVanService;
         }
 
-        [HttpGet("HocVan/GetAll")]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllHocVan()
         {
             var hocVans = await _hocVanService.GetAllHocVansAsync();
             return Ok(hocVans);
         }
 
-        [HttpPost("HocVan/Create")]
-        public async Task<IActionResult> CreateHocVan([FromBody] TrinhDoHocVan hocVan)
+        [HttpPost("Create")]
+        public async Task<IActionResult> Create([FromForm] CreateHocVan createHocVan)
         {
+            var hocVan = new TrinhDoHocVan
+            {
+                MaTDHV = createHocVan.MaTDHV,
+                TenTDHV = createHocVan.TenTDHV,
+                TenTDNN = createHocVan.TenTDNN,
+                GhiChu = createHocVan.GhiChu
+            };
+
             var result = await _hocVanService.CreateHocVanAsync(hocVan);
 
             if (result.hocVan == null)
@@ -40,7 +48,7 @@ namespace ApiTMDT.Controllers
             });
         }
 
-        [HttpPut("HocVan/Update")]
+        [HttpPut("Update")]
         public async Task<IActionResult> UpdateHocVan(int id, [FromBody] TrinhDoHocVan hocVan)
         {
             var result = await _hocVanService.UpdateHocVanAsync(id, hocVan);
@@ -58,7 +66,7 @@ namespace ApiTMDT.Controllers
             });
         }
 
-        [HttpDelete("HocVan/Delete")]
+        [HttpDelete("Delete")]
         public async Task<IActionResult> DeleteHocVan(int id)
         {
             var result = await _hocVanService.DeleteHocVanAsync(id);
@@ -69,6 +77,13 @@ namespace ApiTMDT.Controllers
             }
 
             return Ok(new { message = result.Message });
+        }
+        public class CreateHocVan
+        {
+            public int MaTDHV { get; set; }
+            public string TenTDHV { get; set; }
+            public string TenTDNN { get; set; }
+            public string GhiChu { get; set; }
         }
     }
 }

@@ -16,16 +16,23 @@ namespace ApiTMDT.Controllers
         {
             _phongBanService = phongBanService;
         }
-        [HttpGet("PhongBan/GetAll")]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllPhongBan()
         {
             var phongBans = await _phongBanService.GetAllPhongBansAsync();
             return Ok(phongBans);
         }
 
-        [HttpPost("PhongBan/Create")]
-        public async Task<IActionResult> CreatePhongBan([FromBody] PhongBan phongBan)
+        [HttpPost("Create")]
+        public async Task<IActionResult> Create([FromForm] CreatePhongBan createPhongBan)
         {
+            var phongBan = new PhongBan
+            {
+                MaPB = createPhongBan.MaPB,
+                TenPB = createPhongBan.TenPB,
+                SDT = createPhongBan.SDT
+            };
+
             var result = await _phongBanService.CreatePhongBanAsync(phongBan);
 
             if (result.phongBan == null)
@@ -40,7 +47,7 @@ namespace ApiTMDT.Controllers
             });
         }
 
-        [HttpPut("PhongBan/Update")]
+        [HttpPut("Update")]
         public async Task<IActionResult> UpdatePhongBan(int id, [FromBody] PhongBan phongBan)
         {
             var result = await _phongBanService.UpdatePhongBanAsync(id, phongBan);
@@ -58,7 +65,7 @@ namespace ApiTMDT.Controllers
             });
         }
 
-        [HttpDelete("PhongBan/Delete")]
+        [HttpDelete("Delete")]
         public async Task<IActionResult> DeletePhongBan(int id)
         {
             var result = await _phongBanService.DeletePhongBanAsync(id);
@@ -71,7 +78,7 @@ namespace ApiTMDT.Controllers
             return Ok(new { message = result.Message });
         }
 
-        [HttpGet("PhongBan/Search")]
+        [HttpGet("Search")]
         public async Task<IActionResult> SearchPhongBan([FromQuery] string nameOrPhone)
         {
             var result = await _phongBanService.SearchPhongBanAsync(nameOrPhone);
@@ -86,6 +93,13 @@ namespace ApiTMDT.Controllers
                 data = result.phongBans,
                 message = result.message
             });
+        }
+        public class CreatePhongBan
+        {
+            public int MaPB { get; set; }
+            public string TenPB { get; set; }
+            public string SDT { get; set; }
+
         }
     }
 }

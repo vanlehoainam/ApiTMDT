@@ -1,6 +1,8 @@
 ﻿using ApiTMDT.Models;
 using Data;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ApiTMDT.Service
 {

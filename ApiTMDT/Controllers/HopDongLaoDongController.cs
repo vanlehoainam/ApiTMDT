@@ -2,6 +2,7 @@
 using ApiTMDT.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace ApiTMDT.Controllers
 {
@@ -15,16 +16,26 @@ namespace ApiTMDT.Controllers
         {
             _hopDongLaoDongService = hopDongLaoDongService;
         }
-        [HttpGet("HopDongLaoDong/GetAll")]
+
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllHopDongLaoDong()
         {
             var hopDongLaoDongs = await _hopDongLaoDongService.GetAllHopDongLaoDongsAsync();
             return Ok(hopDongLaoDongs);
         }
 
-        [HttpPost("HopDongLaoDong/Create")]
-        public async Task<IActionResult> CreateHopDongLaoDong([FromBody] HopDongLaoDong hopDongLaoDong)
+        [HttpPost("Create")]
+        public async Task<IActionResult> Create([FromForm] CreateHopDongLaoDong createHopDongLaoDong)
         {
+            var hopDongLaoDong = new HopDongLaoDong
+            {
+                MaHD = createHopDongLaoDong.MaHD,
+                LoaiHD = createHopDongLaoDong.LoaiHD,
+                TuNgay = createHopDongLaoDong.TuNgay,
+                DenNgay = createHopDongLaoDong.DenNgay,
+                MaNV = createHopDongLaoDong.MaNV
+            };
+
             var result = await _hopDongLaoDongService.CreateHopDongLaoDongAsync(hopDongLaoDong);
 
             if (result.hopDongLaoDong == null)
@@ -39,7 +50,7 @@ namespace ApiTMDT.Controllers
             });
         }
 
-        [HttpPut("HopDongLaoDong/Update")]
+        [HttpPut("Update/{id}")]
         public async Task<IActionResult> UpdateHopDongLaoDong(int id, [FromBody] HopDongLaoDong hopDongLaoDong)
         {
             var result = await _hopDongLaoDongService.UpdateHopDongLaoDongAsync(id, hopDongLaoDong);
@@ -57,7 +68,7 @@ namespace ApiTMDT.Controllers
             });
         }
 
-        [HttpDelete("HopDongLaoDong/Delete")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteHopDongLaoDong(int id)
         {
             var result = await _hopDongLaoDongService.DeleteHopDongLaoDongAsync(id);
@@ -68,6 +79,14 @@ namespace ApiTMDT.Controllers
             }
 
             return Ok(new { message = result.Message });
+        }
+        public class CreateHopDongLaoDong
+        {
+            public int MaHD { get; set; }
+            public string LoaiHD { get; set; }
+            public DateTime TuNgay { get; set; }
+            public DateTime DenNgay { get; set; }
+            public int MaNV { get; set; }
         }
     }
 }
