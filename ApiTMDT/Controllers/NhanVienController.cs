@@ -3,6 +3,8 @@ using ApiTMDT.Service;
 using Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading.Tasks;
 
 namespace ApiTMDT.Controllers
@@ -47,7 +49,10 @@ namespace ApiTMDT.Controllers
                 NgaySinh = createNhanVien.NgaySinh,
                 SoDienThoai = createNhanVien.SoDienThoai,
                 Email = createNhanVien.Email,
-                Luong = createNhanVien.Luong
+                Luong = createNhanVien.Luong,
+                MaTDHV = createNhanVien.MaTDHV,
+                MaHD = createNhanVien.MaHD,
+                MaPB = createNhanVien.MaPB,
             };
 
             var result = await _nhanVienService.CreateNhanVienAsync(nhanVien);
@@ -57,9 +62,21 @@ namespace ApiTMDT.Controllers
                 return BadRequest(new { message = result.message });
             }
 
+            var nhanVienWithDetails = await _context.NhanVien
+                .Include(nv => nv.TrinhDoHocVan)
+                .Include(nv => nv.HopDongLaoDong)
+                .Include(nv => nv.PhongBan)
+                .FirstOrDefaultAsync(nv => nv.MaNV == nhanVien.MaNV);
+
             return Ok(new
             {
-                data = result.nhanVien,
+                data = new
+                {
+                    nhanVien = nhanVienWithDetails,
+                    trinhDoHocVan = nhanVienWithDetails.TrinhDoHocVan,
+                    hopDongLaoDong = nhanVienWithDetails.HopDongLaoDong,
+                    phongBan = nhanVienWithDetails.PhongBan
+                },
                 message = result.message
             });
         }
@@ -111,6 +128,24 @@ namespace ApiTMDT.Controllers
                 message = result.message
             });
         }
-        
+        public class CreateNhanVien
+        {
+            public int MaNV { get; set; }
+            public string HoTen { get; set; }
+            public int CCCD { get; set; }
+            public string DiaChi { get; set; }
+            public string GioiTinh { get; set; }
+            public string QueQuan { get; set; }
+            public string NgaySinh { get; set; }
+            public string SoDienThoai { get; set; }
+            public string Email { get; set; }
+            public int Luong { get; set; }            
+            public int? MaTDHV { get; set; }         
+
+            public int? MaPB { get; set; }  
+                  
+            public int? MaHD { get; set; }
+          
+        }
     }
 }
