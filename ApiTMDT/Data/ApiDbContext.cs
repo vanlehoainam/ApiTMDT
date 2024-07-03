@@ -14,7 +14,7 @@ namespace Data
         public DbSet<PhongBan> PhongBan { get; set; }
         public DbSet<TrinhDoHocVan> TrinhDoHocVan { get; set; }
         public DbSet<HopDongLaoDong> HopDongLaoDong { get; set; }
-
+        public DbSet<NghiPhep> NghiPhep { get; set; }
 
     }
 }

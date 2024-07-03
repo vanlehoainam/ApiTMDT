@@ -76,28 +76,7 @@ namespace ApiTMDT.Service
             return (originalPhongBan, existingPhongBan, "Cập nhật phòng ban thành công.");
         }
 
-        public async Task<DeletePhongBanResponse> DeletePhongBanAsync(int id)
-        {
-            var existingPhongBan = await _context.PhongBan.FindAsync(id);
-            if (existingPhongBan == null)
-            {
-                return new DeletePhongBanResponse
-                {
-                    Success = false,
-                    Message = "Không tìm thấy phòng ban"
-                };
-            }
-
-            _context.PhongBan.Remove(existingPhongBan);
-            await _context.SaveChangesAsync();
-
-            return new DeletePhongBanResponse
-            {
-                Success = true,
-                Message = "Xóa thành công"
-            };
-        }
-
+       
         public async Task<(List<PhongBan> phongBans, string message)> SearchPhongBanAsync(string nameOrPhone)
         {
             var query = _context.PhongBan.AsQueryable();

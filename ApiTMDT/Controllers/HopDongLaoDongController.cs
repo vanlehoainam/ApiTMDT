@@ -68,18 +68,6 @@ namespace ApiTMDT.Controllers
             });
         }
 
-        [HttpDelete("Delete/{id}")]
-        public async Task<IActionResult> DeleteHopDongLaoDong(int id)
-        {
-            var result = await _hopDongLaoDongService.DeleteHopDongLaoDongAsync(id);
-
-            if (!result.Success)
-            {
-                return BadRequest(new { message = result.Message });
-            }
-
-            return Ok(new { message = result.Message });
-        }
         public class CreateHopDongLaoDong
         {
             public int MaHD { get; set; }

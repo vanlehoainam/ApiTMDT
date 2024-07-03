@@ -5,12 +5,26 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ApiTMDT.Migrations
 {
-    /// <inheritdoc />
     public partial class initial : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "NghiPhep",
+                columns: table => new
+                {
+                    id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    NgayBatDau = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    NgayKetThuc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LyDo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TrangThai = table.Column<bool>(type: "bit", nullable: true),
+                    MaNV = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NghiPhep", x => x.id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "SanPham",
                 columns: table => new
@@ -171,7 +185,6 @@ namespace ApiTMDT.Migrations
                 principalColumn: "MaPB");
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
@@ -181,6 +194,9 @@ namespace ApiTMDT.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_PhongBan_NhanVien_MaTP",
                 table: "PhongBan");
+
+            migrationBuilder.DropTable(
+                name: "NghiPhep");
 
             migrationBuilder.DropTable(
                 name: "SanPham");

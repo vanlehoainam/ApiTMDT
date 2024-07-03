@@ -64,20 +64,7 @@ namespace ApiTMDT.Controllers
                 message = result.message
             });
         }
-
-        [HttpDelete("Delete")]
-        public async Task<IActionResult> DeletePhongBan(int id)
-        {
-            var result = await _phongBanService.DeletePhongBanAsync(id);
-
-            if (!result.Success)
-            {
-                return BadRequest(new { message = result.Message });
-            }
-
-            return Ok(new { message = result.Message });
-        }
-
+        
         [HttpGet("Search")]
         public async Task<IActionResult> SearchPhongBan([FromQuery] string nameOrPhone)
         {

@@ -52,32 +52,6 @@ namespace ApiTMDT.Service
             return (originalHocVan, existingHocVan, "Cập nhật học vấn thành công.");
         }
 
-        public async Task<DeleteResponse> DeleteHocVanAsync(int id)
-        {
-            var existingHocVan = await _context.TrinhDoHocVan.FindAsync(id);
-            if (existingHocVan == null)
-            {
-                return new DeleteResponse
-                {
-                    Success = false,
-                    Message = "Không tìm thấy học vấn"
-                };
-            }
-
-            _context.TrinhDoHocVan.Remove(existingHocVan);
-            await _context.SaveChangesAsync();
-
-            return new DeleteResponse
-            {
-                Success = true,
-                Message = "Xóa thành công"
-            };
-        }
-
-        public class DeleteResponse
-        {
-            public bool Success { get; set; }
-            public string Message { get; set; }
-        }
+     
     }
 }

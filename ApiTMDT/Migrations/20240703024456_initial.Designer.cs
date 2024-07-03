@@ -12,18 +12,17 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiTMDT.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20240626042214_initial")]
+    [Migration("20240703024456_initial")]
     partial class initial
     {
-        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.12")
+                .HasAnnotation("ProductVersion", "6.0.31")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("ApiTMDT.Models.HopDongLaoDong", b =>
                 {
@@ -31,7 +30,7 @@ namespace ApiTMDT.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaHD"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaHD"), 1L, 1);
 
                     b.Property<DateTime>("DenNgay")
                         .HasColumnType("datetime2");
@@ -54,13 +53,39 @@ namespace ApiTMDT.Migrations
                     b.ToTable("HopDongLaoDong");
                 });
 
+            modelBuilder.Entity("ApiTMDT.Models.NghiPhep", b =>
+                {
+                    b.Property<string>("id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LyDo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MaNV")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("NgayBatDau")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("NgayKetThuc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("TrangThai")
+                        .HasColumnType("bit");
+
+                    b.HasKey("id");
+
+                    b.ToTable("NghiPhep");
+                });
+
             modelBuilder.Entity("ApiTMDT.Models.NhanVien", b =>
                 {
                     b.Property<int>("MaNV")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaNV"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaNV"), 1L, 1);
 
                     b.Property<int>("CCCD")
                         .HasColumnType("int");
@@ -122,7 +147,7 @@ namespace ApiTMDT.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaPB"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaPB"), 1L, 1);
 
                     b.Property<int?>("MaTP")
                         .HasColumnType("int");
@@ -148,7 +173,7 @@ namespace ApiTMDT.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Anh_SP")
                         .IsRequired()
@@ -179,7 +204,7 @@ namespace ApiTMDT.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaTDHV"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaTDHV"), 1L, 1);
 
                     b.Property<string>("GhiChu")
                         .IsRequired()
@@ -204,7 +229,7 @@ namespace ApiTMDT.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Email")
                         .IsRequired()

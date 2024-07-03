@@ -4,6 +4,7 @@ using ApiTMDT.Service;
 using Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace ApiTMDT.Controllers
@@ -98,6 +99,21 @@ namespace ApiTMDT.Controllers
                 data = result.sanPhams,
                 message = result.message
             });
+        }
+        public class CreateSP
+        {
+            [Required]
+            public string Ten_SP { get; set; }
+
+            [Required]
+            public decimal Gia { get; set; }
+
+            [Required]
+            public int SoLuong { get; set; }
+
+            public string GhiChu { get; set; }
+
+            public IFormFile ImageFile { get; set; }
         }
     }
 }

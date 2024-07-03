@@ -66,18 +66,6 @@ namespace ApiTMDT.Controllers
             });
         }
 
-        [HttpDelete("Delete")]
-        public async Task<IActionResult> DeleteHocVan(int id)
-        {
-            var result = await _hocVanService.DeleteHocVanAsync(id);
-
-            if (!result.Success)
-            {
-                return BadRequest(new { message = result.Message });
-            }
-
-            return Ok(new { message = result.Message });
-        }
         public class CreateHocVan
         {
             public int MaTDHV { get; set; }

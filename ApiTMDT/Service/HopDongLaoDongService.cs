@@ -54,29 +54,7 @@ namespace ApiTMDT.Service
             await _context.SaveChangesAsync();
 
             return (originalHopDongLaoDong, existingHopDongLaoDong, "Cập nhật hợp đồng lao động thành công.");
-        }
-
-        public async Task<DeleteResponse> DeleteHopDongLaoDongAsync(int id)
-        {
-            var existingHopDongLaoDong = await _context.HopDongLaoDong.FindAsync(id);
-            if (existingHopDongLaoDong == null)
-            {
-                return new DeleteResponse
-                {
-                    Success = false,
-                    Message = "Không tìm thấy hợp đồng lao động"
-                };
-            }
-
-            _context.HopDongLaoDong.Remove(existingHopDongLaoDong);
-            await _context.SaveChangesAsync();
-
-            return new DeleteResponse
-            {
-                Success = true,
-                Message = "Xóa thành công"
-            };
-        }
+        }      
 
         public class DeleteResponse
         {
