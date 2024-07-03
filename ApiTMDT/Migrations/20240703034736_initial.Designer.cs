@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiTMDT.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20240703024456_initial")]
+    [Migration("20240703034736_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,11 +26,8 @@ namespace ApiTMDT.Migrations
 
             modelBuilder.Entity("ApiTMDT.Models.HopDongLaoDong", b =>
                 {
-                    b.Property<int>("MaHD")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaHD"), 1L, 1);
+                    b.Property<string>("MaHD")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("DenNgay")
                         .HasColumnType("datetime2");
@@ -55,7 +52,7 @@ namespace ApiTMDT.Migrations
 
             modelBuilder.Entity("ApiTMDT.Models.NghiPhep", b =>
                 {
-                    b.Property<string>("id")
+                    b.Property<string>("MaNP")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LyDo")
@@ -74,7 +71,7 @@ namespace ApiTMDT.Migrations
                     b.Property<bool?>("TrangThai")
                         .HasColumnType("bit");
 
-                    b.HasKey("id");
+                    b.HasKey("MaNP");
 
                     b.ToTable("NghiPhep");
                 });
@@ -109,14 +106,17 @@ namespace ApiTMDT.Migrations
                     b.Property<int>("Luong")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MaHD")
-                        .HasColumnType("int");
+                    b.Property<string>("MaHD")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("MaPB")
-                        .HasColumnType("int");
+                    b.Property<string>("MaNP")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("MaTDHV")
-                        .HasColumnType("int");
+                    b.Property<string>("MaPB")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("MaTDHV")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("NgaySinh")
                         .IsRequired()
@@ -134,6 +134,8 @@ namespace ApiTMDT.Migrations
 
                     b.HasIndex("MaHD");
 
+                    b.HasIndex("MaNP");
+
                     b.HasIndex("MaPB");
 
                     b.HasIndex("MaTDHV");
@@ -143,11 +145,8 @@ namespace ApiTMDT.Migrations
 
             modelBuilder.Entity("ApiTMDT.Models.PhongBan", b =>
                 {
-                    b.Property<int>("MaPB")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaPB"), 1L, 1);
+                    b.Property<string>("MaPB")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("MaTP")
                         .HasColumnType("int");
@@ -200,11 +199,8 @@ namespace ApiTMDT.Migrations
 
             modelBuilder.Entity("ApiTMDT.Models.TrinhDoHocVan", b =>
                 {
-                    b.Property<int>("MaTDHV")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaTDHV"), 1L, 1);
+                    b.Property<string>("MaTDHV")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("GhiChu")
                         .IsRequired()
@@ -273,6 +269,10 @@ namespace ApiTMDT.Migrations
                         .WithMany()
                         .HasForeignKey("MaHD");
 
+                    b.HasOne("ApiTMDT.Models.NghiPhep", "NghiPhep")
+                        .WithMany()
+                        .HasForeignKey("MaNP");
+
                     b.HasOne("ApiTMDT.Models.PhongBan", "PhongBan")
                         .WithMany()
                         .HasForeignKey("MaPB");
@@ -282,6 +282,8 @@ namespace ApiTMDT.Migrations
                         .HasForeignKey("MaTDHV");
 
                     b.Navigation("HopDongLaoDong");
+
+                    b.Navigation("NghiPhep");
 
                     b.Navigation("PhongBan");
 

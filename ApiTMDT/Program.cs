@@ -24,6 +24,8 @@ builder.Services.AddScoped<NhanVienSevice>();
 builder.Services.AddScoped<PhongBanService>();
 builder.Services.AddScoped<HopDongLaoDongService>();
 builder.Services.AddScoped<HocVanService>();
+builder.Services.AddScoped<NghiPhepService>();
+
 
 
 

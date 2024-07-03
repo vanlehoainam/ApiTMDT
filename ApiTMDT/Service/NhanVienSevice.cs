@@ -25,6 +25,7 @@ namespace ApiTMDT.Service
                 .Include(nv => nv.TrinhDoHocVan)
                 .Include(nv => nv.PhongBan)
                 .Include(nv => nv.HopDongLaoDong)
+                .Include(nv => nv.NghiPhep)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();

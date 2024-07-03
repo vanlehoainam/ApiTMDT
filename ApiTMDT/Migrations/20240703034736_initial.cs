@@ -13,7 +13,7 @@ namespace ApiTMDT.Migrations
                 name: "NghiPhep",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MaNP = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     NgayBatDau = table.Column<DateTime>(type: "datetime2", nullable: false),
                     NgayKetThuc = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LyDo = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -22,7 +22,7 @@ namespace ApiTMDT.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_NghiPhep", x => x.id);
+                    table.PrimaryKey("PK_NghiPhep", x => x.MaNP);
                 });
 
             migrationBuilder.CreateTable(
@@ -46,8 +46,7 @@ namespace ApiTMDT.Migrations
                 name: "TrinhDoHocVan",
                 columns: table => new
                 {
-                    MaTDHV = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MaTDHV = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     TenTDHV = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TenTDNN = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GhiChu = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -78,8 +77,7 @@ namespace ApiTMDT.Migrations
                 name: "HopDongLaoDong",
                 columns: table => new
                 {
-                    MaHD = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MaHD = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     MaNV = table.Column<int>(type: "int", nullable: false),
                     LoaiHD = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     TuNgay = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -105,9 +103,10 @@ namespace ApiTMDT.Migrations
                     SoDienThoai = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Luong = table.Column<int>(type: "int", nullable: false),
-                    MaTDHV = table.Column<int>(type: "int", nullable: true),
-                    MaPB = table.Column<int>(type: "int", nullable: true),
-                    MaHD = table.Column<int>(type: "int", nullable: true)
+                    MaTDHV = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    MaPB = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    MaHD = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    MaNP = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -117,6 +116,11 @@ namespace ApiTMDT.Migrations
                         column: x => x.MaHD,
                         principalTable: "HopDongLaoDong",
                         principalColumn: "MaHD");
+                    table.ForeignKey(
+                        name: "FK_NhanVien_NghiPhep_MaNP",
+                        column: x => x.MaNP,
+                        principalTable: "NghiPhep",
+                        principalColumn: "MaNP");
                     table.ForeignKey(
                         name: "FK_NhanVien_TrinhDoHocVan_MaTDHV",
                         column: x => x.MaTDHV,
@@ -128,8 +132,7 @@ namespace ApiTMDT.Migrations
                 name: "PhongBan",
                 columns: table => new
                 {
-                    MaPB = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MaPB = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     TenPB = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SDT = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MaTP = table.Column<int>(type: "int", nullable: true)
@@ -153,6 +156,11 @@ namespace ApiTMDT.Migrations
                 name: "IX_NhanVien_MaHD",
                 table: "NhanVien",
                 column: "MaHD");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NhanVien_MaNP",
+                table: "NhanVien",
+                column: "MaNP");
 
             migrationBuilder.CreateIndex(
                 name: "IX_NhanVien_MaPB",
@@ -196,9 +204,6 @@ namespace ApiTMDT.Migrations
                 table: "PhongBan");
 
             migrationBuilder.DropTable(
-                name: "NghiPhep");
-
-            migrationBuilder.DropTable(
                 name: "SanPham");
 
             migrationBuilder.DropTable(
@@ -209,6 +214,9 @@ namespace ApiTMDT.Migrations
 
             migrationBuilder.DropTable(
                 name: "HopDongLaoDong");
+
+            migrationBuilder.DropTable(
+                name: "NghiPhep");
 
             migrationBuilder.DropTable(
                 name: "PhongBan");

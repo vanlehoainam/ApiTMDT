@@ -48,7 +48,7 @@ namespace ApiTMDT.Controllers
         }
 
         [HttpPut("Update")]
-        public async Task<IActionResult> UpdatePhongBan(int id, [FromBody] PhongBan phongBan)
+        public async Task<IActionResult> UpdatePhongBan(string id, [FromBody] PhongBan phongBan)
         {
             var result = await _phongBanService.UpdatePhongBanAsync(id, phongBan);
 
@@ -83,7 +83,7 @@ namespace ApiTMDT.Controllers
         }
         public class CreatePhongBan
         {
-            public int MaPB { get; set; }
+            public string MaPB { get; set; }
             public string TenPB { get; set; }
             public string SDT { get; set; }
 

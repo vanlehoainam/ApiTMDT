@@ -1,7 +1,10 @@
 ﻿using ApiTMDT.Models;
 using Data;
-using System.Data.Entity;
-
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ApiTMDT.Service
 {
@@ -37,7 +40,7 @@ namespace ApiTMDT.Service
 
             var originalNghiPhep = new NghiPhep
             {
-                id = existingNghiPhep.id,
+                MaNP = existingNghiPhep.MaNP,
                 NgayBatDau = existingNghiPhep.NgayBatDau,
                 NgayKetThuc = existingNghiPhep.NgayKetThuc,
                 LyDo = existingNghiPhep.LyDo,

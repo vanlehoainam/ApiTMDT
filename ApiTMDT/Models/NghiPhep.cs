@@ -6,8 +6,7 @@ namespace ApiTMDT.Models
     public class NghiPhep
     {
         [Key]
-        public string id {get; set; }
-
+        public string   MaNP {get; set; }
         public DateTime NgayBatDau { get; set; }
         public DateTime NgayKetThuc { get; set; }
         public string LyDo {  get; set; }

@@ -17,9 +17,9 @@ namespace ApiTMDT.Controllers
         }
 
         [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAllNghiPhep(int pageNumber = 1, int pageSize = 5)
+        public async Task<IActionResult> GetAllNghiPhep()
         {
-            var nghiPheps = await _nghiPhepService.GetAllNghiPhepsAsync(pageNumber, pageSize);
+            var nghiPheps = await _nghiPhepService.GetAllNghiPhepsAsync();
             return Ok(nghiPheps);
         }
 
@@ -28,7 +28,7 @@ namespace ApiTMDT.Controllers
         {
             var nghiPhep = new NghiPhep
             {
-                id = createNghiPhep.Id,
+                MaNP = createNghiPhep.MaNP,
                 NgayBatDau = createNghiPhep.NgayBatDau,
                 NgayKetThuc = createNghiPhep.NgayKetThuc,
                 LyDo = createNghiPhep.LyDo,
@@ -71,7 +71,7 @@ namespace ApiTMDT.Controllers
 
         public class CreateNghiPhep
         {
-            public string Id { get; set; }
+            public string MaNP { get; set; }
             public DateTime NgayBatDau { get; set; }
             public DateTime NgayKetThuc { get; set; }
             public string LyDo { get; set; }
@@ -80,4 +80,4 @@ namespace ApiTMDT.Controllers
         }
     }
 }
-}
+
