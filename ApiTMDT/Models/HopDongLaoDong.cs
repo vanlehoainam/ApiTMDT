@@ -6,7 +6,7 @@ namespace ApiTMDT.Models
     public class HopDongLaoDong
     {
         [Key]
-        public string MaHD { get; set; }
+        public int MaHD { get; set; }
 
         [ForeignKey("NhanVien")]
         public int MaNV { get; set; }

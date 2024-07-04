@@ -31,34 +31,22 @@ namespace ApiTMDT.Service
                 .ToListAsync();
         }
 
-        public async Task<(NhanVien nhanVien, string message)> CreateNhanVienAsync(NhanVien nhanVien)
-        {
-            var existingNhanVienByName = await _context.NhanVien
-                .FirstOrDefaultAsync(nv => nv.HoTen == nhanVien.HoTen);
-
-            if (existingNhanVienByName != null)
+            public async Task<(NhanVien nhanVien, string message)> CreateNhanVienAsync(NhanVien nhanVien)
             {
-                return (null, "Tên nhân viên đã tồn tại.");
+                var existingNhanVienByName = await _context.NhanVien
+                    .FirstOrDefaultAsync(nv => nv.HoTen == nhanVien.HoTen);
+
+                if (existingNhanVienByName != null)
+                {
+                    return (null, "Tên nhân viên đã tồn tại.");
+                }
+                             
+
+                _context.NhanVien.Add(nhanVien);
+                await _context.SaveChangesAsync();
+
+                return (nhanVien, "Tạo nhân viên thành công.");
             }
-
-            if (string.IsNullOrEmpty(nhanVien.HoTen) ||
-                       nhanVien.CCCD == 0 ||
-                string.IsNullOrEmpty(nhanVien.DiaChi) ||
-                string.IsNullOrEmpty(nhanVien.GioiTinh) ||
-                string.IsNullOrEmpty(nhanVien.QueQuan) ||
-                nhanVien.NgaySinh == default ||
-                string.IsNullOrEmpty(nhanVien.SoDienThoai) ||
-                string.IsNullOrEmpty(nhanVien.Email) ||
-                nhanVien.Luong <= 0)
-            {
-                return (null, "Vui lòng điền đầy đủ thông tin bắt buộc.");
-            }
-
-            _context.NhanVien.Add(nhanVien);
-            await _context.SaveChangesAsync();
-
-            return (nhanVien, "Tạo nhân viên thành công.");
-        }
 
         public async Task<(NhanVien originalNhanVien, NhanVien updatedNhanVien, string message)> UpdateNhanVienAsync(int id, NhanVien nhanVienUpdate)
         {

@@ -42,7 +42,7 @@ namespace ApiTMDT.Service
             return (phongBan, "Tạo phòng ban thành công.");
         }
 
-        public async Task<(PhongBan originalPhongBan, PhongBan updatedPhongBan, string message)> UpdatePhongBanAsync(string id, PhongBan phongBanUpdate)
+        public async Task<(PhongBan originalPhongBan, PhongBan updatedPhongBan, string message)> UpdatePhongBanAsync(int id, PhongBan phongBanUpdate)
         {
             var existingPhongBan = await _context.PhongBan.FindAsync(id);
             if (existingPhongBan == null)

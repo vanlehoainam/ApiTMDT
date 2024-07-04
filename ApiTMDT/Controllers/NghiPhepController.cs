@@ -71,7 +71,7 @@ namespace ApiTMDT.Controllers
 
         public class CreateNghiPhep
         {
-            public string MaNP { get; set; }
+            public int MaNP { get; set; }
             public DateTime NgayBatDau { get; set; }
             public DateTime NgayKetThuc { get; set; }
             public string LyDo { get; set; }

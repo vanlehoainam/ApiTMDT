@@ -68,7 +68,7 @@ namespace ApiTMDT.Controllers
 
         public class CreateHocVan
         {
-            public string MaTDHV { get; set; }
+            public int MaTDHV { get; set; }
             public string TenTDHV { get; set; }
             public string TenTDNN { get; set; }
             public string GhiChu { get; set; }

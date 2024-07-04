@@ -70,7 +70,7 @@ namespace ApiTMDT.Controllers
 
         public class CreateHopDongLaoDong
         {
-            public string MaHD { get; set; }
+            public int MaHD { get; set; }
             public string LoaiHD { get; set; }
             public DateTime TuNgay { get; set; }
             public DateTime DenNgay { get; set; }

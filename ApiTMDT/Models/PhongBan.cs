@@ -7,7 +7,7 @@ namespace ApiTMDT.Models
     {
         
             [Key]
-            public string MaPB { get; set; }
+            public int MaPB { get; set; }
 
             [Required]
             public string TenPB { get; set; }

@@ -40,7 +40,6 @@ namespace ApiTMDT.Controllers
         {
             var nhanVien = new NhanVien
             {
-                MaNV = createNhanVien.MaNV,
                 HoTen = createNhanVien.HoTen,
                 CCCD = createNhanVien.CCCD,
                 DiaChi = createNhanVien.DiaChi,
