@@ -15,6 +15,9 @@ namespace Data
         public DbSet<TrinhDoHocVan> TrinhDoHocVan { get; set; }
         public DbSet<HopDongLaoDong> HopDongLaoDong { get; set; }
         public DbSet<NghiPhep> NghiPhep { get; set; }
+        public DbSet<KhachHang> KhachHangs { get; set; }
+        public DbSet<HoaDon> HoaDons { get; set; }
+        public DbSet<ChiTietHoaDon> ChiTietHoaDons { get; set; }
 
     }
 }

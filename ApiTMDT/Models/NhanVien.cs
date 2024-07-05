@@ -26,19 +26,19 @@ namespace ApiTMDT.Models
         public int Luong { get; set; }
 
         [ForeignKey("TrinhDoHocVan")]
-        public string? MaTDHV { get; set; }
+        public int? MaTDHV { get; set; }
         public virtual TrinhDoHocVan TrinhDoHocVan { get; set; }
 
         [ForeignKey("PhongBan")]
-        public string? MaPB { get; set; }
+        public int? MaPB { get; set; }
         public virtual PhongBan PhongBan { get; set; }
 
         [ForeignKey("HopDongLaoDong")]
-        public string? MaHD { get; set; }
+        public int? MaHD { get; set; }
         public virtual HopDongLaoDong HopDongLaoDong { get; set; }
 
         [ForeignKey("NghiPhep")]
-        public string? MaNP { get; set; }
+        public int? MaNP { get; set; }
         public virtual NghiPhep NghiPhep { get; set; }
 
 

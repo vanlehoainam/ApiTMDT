@@ -22,5 +22,6 @@ namespace ApiTMDT.Models
 
         [NotMapped]
         public IFormFile ImageFile { get; set; }
+        public virtual ICollection<ChiTietHoaDon> ChiTietHoaDons { get; set; }
     }
 }

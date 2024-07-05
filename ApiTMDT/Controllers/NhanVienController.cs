@@ -140,12 +140,12 @@ namespace ApiTMDT.Controllers
             public string SoDienThoai { get; set; }
             public string Email { get; set; }
             public int Luong { get; set; }            
-            public string? MaTDHV { get; set; }         
+            public int? MaTDHV { get; set; }         
 
-            public string? MaPB { get; set; }  
+            public int? MaPB { get; set; }  
                   
-            public string? MaHD { get; set; }
-            public string ? MaNP { get; set; }
+            public int? MaHD { get; set; }
+            public int? MaNP { get; set; }
 
         }
     }

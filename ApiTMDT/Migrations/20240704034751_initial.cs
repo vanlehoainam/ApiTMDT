@@ -10,10 +10,27 @@ namespace ApiTMDT.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "KhachHangs",
+                columns: table => new
+                {
+                    MaKH = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    HoTen = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SoDienThoai = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_KhachHangs", x => x.MaKH);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "NghiPhep",
                 columns: table => new
                 {
-                    MaNP = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MaNP = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     NgayBatDau = table.Column<DateTime>(type: "datetime2", nullable: false),
                     NgayKetThuc = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LyDo = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -46,7 +63,8 @@ namespace ApiTMDT.Migrations
                 name: "TrinhDoHocVan",
                 columns: table => new
                 {
-                    MaTDHV = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MaTDHV = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     TenTDHV = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TenTDNN = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GhiChu = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -74,10 +92,59 @@ namespace ApiTMDT.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "HoaDons",
+                columns: table => new
+                {
+                    MaHD = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NgayLap = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MaKH = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HoaDons", x => x.MaHD);
+                    table.ForeignKey(
+                        name: "FK_HoaDons_KhachHangs_MaKH",
+                        column: x => x.MaKH,
+                        principalTable: "KhachHangs",
+                        principalColumn: "MaKH",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ChiTietHoaDons",
+                columns: table => new
+                {
+                    MaCTHD = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MaHD = table.Column<int>(type: "int", nullable: false),
+                    MaSP = table.Column<int>(type: "int", nullable: false),
+                    SoLuong = table.Column<int>(type: "int", nullable: false),
+                    DonGia = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChiTietHoaDons", x => x.MaCTHD);
+                    table.ForeignKey(
+                        name: "FK_ChiTietHoaDons_HoaDons_MaHD",
+                        column: x => x.MaHD,
+                        principalTable: "HoaDons",
+                        principalColumn: "MaHD",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ChiTietHoaDons_SanPham_MaSP",
+                        column: x => x.MaSP,
+                        principalTable: "SanPham",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "HopDongLaoDong",
                 columns: table => new
                 {
-                    MaHD = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MaHD = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     MaNV = table.Column<int>(type: "int", nullable: false),
                     LoaiHD = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     TuNgay = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -103,10 +170,10 @@ namespace ApiTMDT.Migrations
                     SoDienThoai = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Luong = table.Column<int>(type: "int", nullable: false),
-                    MaTDHV = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    MaPB = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    MaHD = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    MaNP = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    MaTDHV = table.Column<int>(type: "int", nullable: true),
+                    MaPB = table.Column<int>(type: "int", nullable: true),
+                    MaHD = table.Column<int>(type: "int", nullable: true),
+                    MaNP = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -132,7 +199,8 @@ namespace ApiTMDT.Migrations
                 name: "PhongBan",
                 columns: table => new
                 {
-                    MaPB = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MaPB = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     TenPB = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SDT = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MaTP = table.Column<int>(type: "int", nullable: true)
@@ -146,6 +214,21 @@ namespace ApiTMDT.Migrations
                         principalTable: "NhanVien",
                         principalColumn: "MaNV");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChiTietHoaDons_MaHD",
+                table: "ChiTietHoaDons",
+                column: "MaHD");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChiTietHoaDons_MaSP",
+                table: "ChiTietHoaDons",
+                column: "MaSP");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HoaDons_MaKH",
+                table: "HoaDons",
+                column: "MaKH");
 
             migrationBuilder.CreateIndex(
                 name: "IX_HopDongLaoDong_MaNV",
@@ -204,10 +287,19 @@ namespace ApiTMDT.Migrations
                 table: "PhongBan");
 
             migrationBuilder.DropTable(
-                name: "SanPham");
+                name: "ChiTietHoaDons");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "HoaDons");
+
+            migrationBuilder.DropTable(
+                name: "SanPham");
+
+            migrationBuilder.DropTable(
+                name: "KhachHangs");
 
             migrationBuilder.DropTable(
                 name: "NhanVien");
