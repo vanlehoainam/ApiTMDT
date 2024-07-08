@@ -8,21 +8,35 @@ namespace ApiTMDT.Models
         [Key]
         public int MaNV { get; set; }
 
+        [Required]
+        [StringLength(100)] 
         public string HoTen { get; set; }
 
-        public int CCCD { get; set; }
+        [Required]
+        public int CCCD { get; set; } 
+
+        [StringLength(200)] 
         public string DiaChi { get; set; }
-               
+
+        [StringLength(10)] 
         public string GioiTinh { get; set; }
 
+        [StringLength(100)] 
         public string QueQuan { get; set; }
 
-        public string NgaySinh { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime NgaySinh { get; set; } 
 
+        [Required]
+        [Phone]
+        [StringLength(10)] 
         public string SoDienThoai { get; set; }
 
+        [EmailAddress]
+        [StringLength(100)] 
         public string Email { get; set; }
 
+        [Range(0, int.MaxValue, ErrorMessage = "Lương phải là số Dương.")]
         public int Luong { get; set; }
 
         [ForeignKey("TrinhDoHocVan")]

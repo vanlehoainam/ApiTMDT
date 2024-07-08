@@ -7,8 +7,13 @@ namespace ApiTMDT.Models
     {
         [Key]
         public int MaNP {get; set; }
+        [Required]
         public DateTime NgayBatDau { get; set; }
+        [Required]
         public DateTime NgayKetThuc { get; set; }
+
+        [Required]
+        [StringLength(500)]
         public string LyDo {  get; set; }
         public bool? TrangThai { get; set; }
 

@@ -21,6 +21,7 @@ namespace ApiTMDT.Service
         public async Task<List<PhongBan>> GetAllPhongBansAsync(int pageNumber = 1, int pageSize = 5)
         {
             return await _context.PhongBan
+                .Include(pb => pb.TruongPhong)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();

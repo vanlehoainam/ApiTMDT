@@ -5,19 +5,21 @@ namespace ApiTMDT.Models
 {
     public class PhongBan
     {
-        
-            [Key]
-            public int MaPB { get; set; }
+        [Key]
+        public int MaPB { get; set; }
 
-            [Required]
-            public string TenPB { get; set; }
+        [Required]
+        [StringLength(100)] 
+        public string TenPB { get; set; }
 
-            public string SDT { get; set; }
+        [Phone]
+        [StringLength(10)] 
+        public string SDT { get; set; }
 
-            public int? MaTP { get; set; }
+        public int? MaTP { get; set; }
 
-            [ForeignKey("MaTP")]
-            public virtual NhanVien TruongPhong { get; set; }
-        
+        [ForeignKey("MaTP")]
+        public virtual NhanVien TruongPhong { get; set; }
+
     }
 }

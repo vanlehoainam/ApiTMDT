@@ -16,7 +16,9 @@ namespace ApiTMDT.Models
         public int MaSP { get; set; }
         public virtual SanPhamModel SanPham { get; set; }
 
+        [Required] 
         public int SoLuong { get; set; }
+        [Required]
         public decimal DonGia { get; set; }
     }
 }

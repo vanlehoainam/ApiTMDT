@@ -33,7 +33,7 @@ namespace ApiTMDT.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NgayBatDau = table.Column<DateTime>(type: "datetime2", nullable: false),
                     NgayKetThuc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LyDo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LyDo = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     TrangThai = table.Column<bool>(type: "bit", nullable: true),
                     MaNV = table.Column<int>(type: "int", nullable: false)
                 },
@@ -98,7 +98,8 @@ namespace ApiTMDT.Migrations
                     MaHD = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NgayLap = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MaKH = table.Column<int>(type: "int", nullable: false)
+                    MaKH = table.Column<int>(type: "int", nullable: false),
+                    TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -161,14 +162,14 @@ namespace ApiTMDT.Migrations
                 {
                     MaNV = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    HoTen = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HoTen = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     CCCD = table.Column<int>(type: "int", nullable: false),
-                    DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GioiTinh = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    QueQuan = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NgaySinh = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SoDienThoai = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DiaChi = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    GioiTinh = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    QueQuan = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    NgaySinh = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SoDienThoai = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Luong = table.Column<int>(type: "int", nullable: false),
                     MaTDHV = table.Column<int>(type: "int", nullable: true),
                     MaPB = table.Column<int>(type: "int", nullable: true),
@@ -201,8 +202,8 @@ namespace ApiTMDT.Migrations
                 {
                     MaPB = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TenPB = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SDT = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenPB = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    SDT = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     MaTP = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>

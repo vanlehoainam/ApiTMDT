@@ -4,6 +4,7 @@ using Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading.Tasks;
 
@@ -136,7 +137,9 @@ namespace ApiTMDT.Controllers
             public string DiaChi { get; set; }
             public string GioiTinh { get; set; }
             public string QueQuan { get; set; }
-            public string NgaySinh { get; set; }
+
+            [DataType(DataType.Date)]
+            public DateTime NgaySinh { get; set; }
             public string SoDienThoai { get; set; }
             public string Email { get; set; }
             public int Luong { get; set; }            

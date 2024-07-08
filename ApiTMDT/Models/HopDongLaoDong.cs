@@ -15,7 +15,7 @@ namespace ApiTMDT.Models
         [Required]
         [StringLength(20)]
         public string LoaiHD { get; set; }
-
+        [Required]
         public DateTime TuNgay { get; set; }
 
         public DateTime DenNgay { get; set; }
