@@ -5,6 +5,7 @@ using Data;
 using Microsoft.AspNet.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.Design.Serialization;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -29,9 +30,8 @@ builder.Services.AddScoped<KhachHangSevice>();
 builder.Services.AddScoped<HoaDonService>();
 builder.Services.AddScoped<ChiTietHoaDonService>();
 
-
-
-
+builder.Services.AddControllers().AddJsonOptions(x =>
+   x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
 builder.Services.AddDbContext<ApiDbContext>(
     options => options.UseSqlServer(
