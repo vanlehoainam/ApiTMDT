@@ -37,7 +37,7 @@ namespace ApiTMDT.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromForm] CreateNhanVien createNhanVien)
+        public async Task<IActionResult> Create([FromBody] CreateNhanVien createNhanVien)
         {
             var nhanVien = new NhanVien
             {

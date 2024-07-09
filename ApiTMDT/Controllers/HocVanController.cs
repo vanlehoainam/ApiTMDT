@@ -24,11 +24,11 @@ namespace ApiTMDT.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromForm] CreateHocVan createHocVan)
+        public async Task<IActionResult> Create([FromBody] CreateHocVan createHocVan)
         {
             var hocVan = new TrinhDoHocVan
             {
-                MaTDHV = createHocVan.MaTDHV,
+             
                 TenTDHV = createHocVan.TenTDHV,
                 TenTDNN = createHocVan.TenTDNN,
                 GhiChu = createHocVan.GhiChu
@@ -68,7 +68,7 @@ namespace ApiTMDT.Controllers
 
         public class CreateHocVan
         {
-            public int MaTDHV { get; set; }
+          
             public string TenTDHV { get; set; }
             public string TenTDNN { get; set; }
             public string GhiChu { get; set; }

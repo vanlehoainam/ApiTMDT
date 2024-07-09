@@ -2,6 +2,7 @@
 using ApiTMDT.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace ApiTMDT.Controllers
 {
@@ -24,13 +25,16 @@ namespace ApiTMDT.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromForm] CreatePhongBan createPhongBan)
+        public async Task<IActionResult> Create([FromBody] CreatePhongBan createPhongBan)
         {
             var phongBan = new PhongBan
             {
-                MaPB = createPhongBan.MaPB,
+                
                 TenPB = createPhongBan.TenPB,
-                SDT = createPhongBan.SDT
+                SDT = createPhongBan.SDT,
+                Email = createPhongBan.Email,
+                NgayThanhLap =  createPhongBan.NgayThanhLap,
+                GhiChu = createPhongBan.GhiChu
             };
 
             var result = await _phongBanService.CreatePhongBanAsync(phongBan);
@@ -83,9 +87,15 @@ namespace ApiTMDT.Controllers
         }
         public class CreatePhongBan
         {
-            public int MaPB { get; set; }
+           
             public string TenPB { get; set; }
             public string SDT { get; set; }
+           
+            public string Email { get; set; }
+
+            [DataType(DataType.Date)]
+            public DateTime? NgayThanhLap { get; set; }
+            public string GhiChu { get; set; }
 
         }
     }

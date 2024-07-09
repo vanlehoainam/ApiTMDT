@@ -30,7 +30,7 @@ namespace ApiTMDT.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromForm] CreateKhachHang createKhachHang)
+        public async Task<IActionResult> Create([FromBody] CreateKhachHang createKhachHang)
         {
             var khachHang = new KhachHang
             {

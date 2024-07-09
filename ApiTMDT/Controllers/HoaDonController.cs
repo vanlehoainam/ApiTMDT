@@ -1,8 +1,10 @@
 ﻿using ApiTMDT.Models;
 using ApiTMDT.Service;
 using Data;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace ApiTMDT.Controllers
 {
@@ -27,13 +29,16 @@ namespace ApiTMDT.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromForm] CreateHoaDon createHoaDon)
+        public async Task<IActionResult> Create([FromBody] CreateHoaDon createHoaDon)
         {
             var hoaDon = new HoaDon
             {
                 NgayLap = createHoaDon.NgayLap,
                 TongTien = createHoaDon.TongTien,
-                MaKH = createHoaDon.MaKH
+                MaKH = createHoaDon.MaKH,
+                TrangThai = createHoaDon.TrangThai,
+                PhuongThucThanhToan = createHoaDon.PhuongThucThanhToan,
+                GhiChu = createHoaDon.GhiChu
             };
 
             var result = await _hoaDonService.CreateHoaDonAsync(hoaDon);
@@ -55,9 +60,19 @@ namespace ApiTMDT.Controllers
             });
         }
 
-        [HttpPut("Update")]
-        public async Task<IActionResult> Update(int id, [FromBody] HoaDon hoaDon)
+        [HttpPut("Update/{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateHoaDon updateHoaDon)
         {
+            var hoaDon = new HoaDon
+            {
+                NgayLap = updateHoaDon.NgayLap,
+                TongTien = updateHoaDon.TongTien,
+                MaKH = updateHoaDon.MaKH,
+                TrangThai = updateHoaDon.TrangThai,
+                PhuongThucThanhToan = updateHoaDon.PhuongThucThanhToan,
+                GhiChu = updateHoaDon.GhiChu
+            };
+
             var result = await _hoaDonService.UpdateHoaDonAsync(id, hoaDon);
 
             if (result.updatedHoaDon == null)
@@ -73,7 +88,6 @@ namespace ApiTMDT.Controllers
             });
         }
 
-      
         [HttpGet("Search")]
         public async Task<IActionResult> Search([FromQuery] string maKHOrNgayLap)
         {
@@ -93,10 +107,48 @@ namespace ApiTMDT.Controllers
 
         public class CreateHoaDon
         {
+            [Required]
             public DateTime NgayLap { get; set; }
+
+            [Required]
             public decimal TongTien { get; set; }
+
+            [Required]
             public int MaKH { get; set; }
+
+            [Required]
+            [StringLength(50)]
+            public string TrangThai { get; set; }
+
+            [Required]
+            [StringLength(50)]
+            public string PhuongThucThanhToan { get; set; }
+
+            [StringLength(500)]
+            public string GhiChu { get; set; }
+        }
+
+        public class UpdateHoaDon
+        {
+            [Required]
+            public DateTime NgayLap { get; set; }
+
+            [Required]
+            public decimal TongTien { get; set; }
+
+            [Required]
+            public int MaKH { get; set; }
+
+            [Required]
+            [StringLength(50)]
+            public string TrangThai { get; set; }
+
+            [Required]
+            [StringLength(50)]
+            public string PhuongThucThanhToan { get; set; }
+
+            [StringLength(500)]
+            public string GhiChu { get; set; }
         }
     }
 }
-

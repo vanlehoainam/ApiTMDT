@@ -24,11 +24,11 @@ namespace ApiTMDT.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromForm] CreateNghiPhep createNghiPhep)
+        public async Task<IActionResult> Create([FromBody] CreateNghiPhep createNghiPhep)
         {
             var nghiPhep = new NghiPhep
             {
-                MaNP = createNghiPhep.MaNP,
+               
                 NgayBatDau = createNghiPhep.NgayBatDau,
                 NgayKetThuc = createNghiPhep.NgayKetThuc,
                 LyDo = createNghiPhep.LyDo,
@@ -71,7 +71,7 @@ namespace ApiTMDT.Controllers
 
         public class CreateNghiPhep
         {
-            public int MaNP { get; set; }
+          
             public DateTime NgayBatDau { get; set; }
             public DateTime NgayKetThuc { get; set; }
             public string LyDo { get; set; }

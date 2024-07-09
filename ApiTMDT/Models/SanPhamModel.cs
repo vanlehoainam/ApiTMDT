@@ -17,7 +17,8 @@ namespace ApiTMDT.Models
         public string Anh_SP { get; set; }
         [Required]
         public int SoLuong { get; set; }
-
+        [Required]
+        public string MoTa { get; set; }
         public string GhiChu { get; set; }
 
         [NotMapped]

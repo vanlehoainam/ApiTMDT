@@ -2,6 +2,7 @@
 using ApiTMDT.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace ApiTMDT.Controllers
@@ -25,15 +26,22 @@ namespace ApiTMDT.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromForm] CreateHopDongLaoDong createHopDongLaoDong)
+        public async Task<IActionResult> Create([FromBody] CreateHopDongLaoDong createHopDongLaoDong)
         {
             var hopDongLaoDong = new HopDongLaoDong
             {
-                MaHD = createHopDongLaoDong.MaHD,
+              
                 LoaiHD = createHopDongLaoDong.LoaiHD,
                 TuNgay = createHopDongLaoDong.TuNgay,
                 DenNgay = createHopDongLaoDong.DenNgay,
-                MaNV = createHopDongLaoDong.MaNV
+                MaNV = createHopDongLaoDong.MaNV,
+                GhiChu = createHopDongLaoDong .GhiChu,
+                TrangThai = createHopDongLaoDong.TrangThai,
+                LuongCoBan = createHopDongLaoDong.LuongCoBan,
+                NgayKy = createHopDongLaoDong.NgayKy,
+                NgayLap=  createHopDongLaoDong.NgayLap
+
+
             };
 
             var result = await _hopDongLaoDongService.CreateHopDongLaoDongAsync(hopDongLaoDong);
@@ -70,11 +78,18 @@ namespace ApiTMDT.Controllers
 
         public class CreateHopDongLaoDong
         {
-            public int MaHD { get; set; }
+            
             public string LoaiHD { get; set; }
             public DateTime TuNgay { get; set; }
             public DateTime DenNgay { get; set; }
             public int MaNV { get; set; }
+            public string TrangThai { get; set; }
+            public string GhiChu { get; set; }
+
+            public decimal LuongCoBan { get; set; }
+
+            public DateTime NgayKy { get; set; }
+            public DateTime NgayLap { get; set; }
         }
     }
 }

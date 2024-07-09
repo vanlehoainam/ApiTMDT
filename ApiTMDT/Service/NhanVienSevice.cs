@@ -22,10 +22,10 @@ namespace ApiTMDT.Service
         public async Task<List<NhanVien>> GetAllNhanViensAsync(int pageNumber = 1, int pageSize = 5)
         {
             return await _context.NhanVien
-                /*.Include(nv => nv.TrinhDoHocVan)
+               .Include(nv => nv.TrinhDoHocVan)
                 .Include(nv => nv.PhongBan)
                 .Include(nv => nv.HopDongLaoDong)
-                .Include(nv => nv.NghiPhep)*/
+                .Include(nv => nv.NghiPhep)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();

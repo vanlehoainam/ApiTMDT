@@ -33,11 +33,19 @@ namespace ApiTMDT.Migrations
                     b.Property<decimal>("DonGia")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("GhiChu")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<int>("MaHD")
                         .HasColumnType("int");
 
                     b.Property<int>("MaSP")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("NgayTao")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("SoLuong")
                         .HasColumnType("int");
@@ -59,14 +67,29 @@ namespace ApiTMDT.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaHD"), 1L, 1);
 
+                    b.Property<string>("GhiChu")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<int>("MaKH")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("NgayLap")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("PhuongThucThanhToan")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<decimal>("TongTien")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("TrangThai")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("MaHD");
 
@@ -77,27 +100,46 @@ namespace ApiTMDT.Migrations
 
             modelBuilder.Entity("ApiTMDT.Models.HopDongLaoDong", b =>
                 {
-                    b.Property<int>("MaHD")
+                    b.Property<int>("MaHDLD")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaHD"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaHDLD"), 1L, 1);
 
                     b.Property<DateTime>("DenNgay")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("GhiChu")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("LoaiHD")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<decimal>("LuongCoBan")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("MaNV")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("NgayKy")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("NgayLap")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TrangThai")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("TuNgay")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("MaHD");
+                    b.HasKey("MaHDLD");
 
                     b.HasIndex("MaNV");
 
@@ -243,8 +285,26 @@ namespace ApiTMDT.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaPB"), 1L, 1);
 
+                    b.Property<string>("DiaChi")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("GhiChu")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<int?>("MaTP")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("NgayThanhLap")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("SDT")
                         .IsRequired()
@@ -282,6 +342,10 @@ namespace ApiTMDT.Migrations
                     b.Property<decimal>("Gia")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("MoTa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("SoLuong")
                         .HasColumnType("int");
 
@@ -304,15 +368,18 @@ namespace ApiTMDT.Migrations
 
                     b.Property<string>("GhiChu")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("TenTDHV")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("TenTDNN")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("MaTDHV");
 

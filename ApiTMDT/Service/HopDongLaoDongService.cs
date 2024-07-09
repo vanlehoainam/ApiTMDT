@@ -38,7 +38,7 @@ namespace ApiTMDT.Service
 
             var originalHopDongLaoDong = new HopDongLaoDong
             {
-                MaHD = existingHopDongLaoDong.MaHD,
+               
                 LoaiHD = existingHopDongLaoDong.LoaiHD,
                 TuNgay = existingHopDongLaoDong.TuNgay,
                 DenNgay = existingHopDongLaoDong.DenNgay,

@@ -52,6 +52,7 @@ namespace ApiTMDT.Migrations
                     Gia = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Anh_SP = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SoLuong = table.Column<int>(type: "int", nullable: false),
+                    MoTa = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GhiChu = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -65,9 +66,9 @@ namespace ApiTMDT.Migrations
                 {
                     MaTDHV = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TenTDHV = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TenTDNN = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GhiChu = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TenTDHV = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    TenTDNN = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    GhiChu = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -98,8 +99,11 @@ namespace ApiTMDT.Migrations
                     MaHD = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NgayLap = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MaKH = table.Column<int>(type: "int", nullable: false),
-                    TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TrangThai = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PhuongThucThanhToan = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    GhiChu = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    MaKH = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -118,10 +122,12 @@ namespace ApiTMDT.Migrations
                 {
                     MaCTHD = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MaHD = table.Column<int>(type: "int", nullable: false),
-                    MaSP = table.Column<int>(type: "int", nullable: false),
+                    NgayTao = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    GhiChu = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     SoLuong = table.Column<int>(type: "int", nullable: false),
-                    DonGia = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    DonGia = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    MaHD = table.Column<int>(type: "int", nullable: false),
+                    MaSP = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -144,16 +150,21 @@ namespace ApiTMDT.Migrations
                 name: "HopDongLaoDong",
                 columns: table => new
                 {
-                    MaHD = table.Column<int>(type: "int", nullable: false)
+                    MaHDLD = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MaNV = table.Column<int>(type: "int", nullable: false),
                     LoaiHD = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     TuNgay = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DenNgay = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    DenNgay = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TrangThai = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    GhiChu = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    LuongCoBan = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    NgayKy = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    NgayLap = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HopDongLaoDong", x => x.MaHD);
+                    table.PrimaryKey("PK_HopDongLaoDong", x => x.MaHDLD);
                 });
 
             migrationBuilder.CreateTable(
@@ -183,7 +194,7 @@ namespace ApiTMDT.Migrations
                         name: "FK_NhanVien_HopDongLaoDong_MaHD",
                         column: x => x.MaHD,
                         principalTable: "HopDongLaoDong",
-                        principalColumn: "MaHD");
+                        principalColumn: "MaHDLD");
                     table.ForeignKey(
                         name: "FK_NhanVien_NghiPhep_MaNP",
                         column: x => x.MaNP,
@@ -204,6 +215,10 @@ namespace ApiTMDT.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TenPB = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     SDT = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    DiaChi = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    NgayThanhLap = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    GhiChu = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     MaTP = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
