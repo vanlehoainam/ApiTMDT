@@ -2,10 +2,13 @@
 using ApiTMDT.Repositories;
 using ApiTMDT.Service;
 using Data;
+using DinkToPdf.Contracts;
+using DinkToPdf;
 using Microsoft.AspNet.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.Design.Serialization;
 using System.Text.Json.Serialization;
+using ApiTMDT.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -37,6 +40,10 @@ builder.Services.AddDbContext<ApiDbContext>(
     options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
         ));
+// Configure DinkToPdf
+var context = new CustomAssemblyLoadContext();
+context.LoadUnmanagedLibrary(Path.Combine(Directory.GetCurrentDirectory(), "libwkhtmltox.dll"));
+builder.Services.AddSingleton(typeof(DinkToPdf.Contracts.IConverter), new DinkToPdf.SynchronizedConverter(new DinkToPdf.PdfTools()));
 //services cors
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
 {
