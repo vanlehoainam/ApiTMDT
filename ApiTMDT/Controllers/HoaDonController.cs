@@ -2,9 +2,10 @@
 using ApiTMDT.Service;
 using Data;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ApiTMDT.Controllers
 {
@@ -41,7 +42,7 @@ namespace ApiTMDT.Controllers
                 GhiChu = createHoaDon.GhiChu
             };
 
-            var result = await _hoaDonService.CreateHoaDonAsync(hoaDon);
+            var result = await _hoaDonService.CreateHoaDonWithDetailsAsync(hoaDon, createHoaDon.ChiTietHoaDons);
 
             if (result.hoaDon == null)
             {
@@ -104,7 +105,6 @@ namespace ApiTMDT.Controllers
                 message = result.message
             });
         }
-      
 
         public class CreateHoaDon
         {
@@ -127,6 +127,8 @@ namespace ApiTMDT.Controllers
 
             [StringLength(500)]
             public string GhiChu { get; set; }
+
+            public List<ChiTietHoaDon> ChiTietHoaDons { get; set; }
         }
 
         public class UpdateHoaDon

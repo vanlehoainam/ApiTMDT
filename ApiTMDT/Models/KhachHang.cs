@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-
+using System.Text.Json.Serialization;
 namespace ApiTMDT.Models
 {
     public class KhachHang
@@ -13,6 +13,9 @@ namespace ApiTMDT.Models
         public string SoDienThoai { get; set; }
         public string Email { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<HoaDon> HoaDons { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<GioHang> GioHangs { get; set; }
     }
 }

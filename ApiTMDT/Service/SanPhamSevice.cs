@@ -72,16 +72,16 @@ namespace ApiTMDT.Service
 
             return (sanPham, "Tạo sản phẩm thành công.");
         }
-        public async Task<(SanPhamModel originalSanPham, SanPhamModel updatedSanPham, string message)> UpdateSanPhamAsync(int id, SanPhamModel sanPhamUpdate)
+        public async Task<(SanPhamModel originalSanPham, SanPhamModel updatedSanPham, string message)> UpdateSanPhamAsync(int MaSP, SanPhamModel sanPhamUpdate)
         {
-            var existingSanPham = await _context.SanPham.FindAsync(id);
+            var existingSanPham = await _context.SanPham.FindAsync(MaSP);
             if (existingSanPham == null)
             {
                 return (null, null, "Sản phẩm không tồn tại.");
             }
 
             var sanPhamWithSameName = await _context.SanPham
-                .FirstOrDefaultAsync(sp => sp.Ten_SP == sanPhamUpdate.Ten_SP && sp.Id != id);
+                .FirstOrDefaultAsync(sp => sp.Ten_SP == sanPhamUpdate.Ten_SP && sp.MaSP != MaSP);
 
             if (sanPhamWithSameName != null)
             {
@@ -90,7 +90,7 @@ namespace ApiTMDT.Service
 
             var originalSanPham = new SanPhamModel
             {
-                Id = existingSanPham.Id,
+                MaSP = existingSanPham.MaSP,
                 Ten_SP = existingSanPham.Ten_SP,
                 GhiChu = existingSanPham.GhiChu,
                 Gia = existingSanPham.Gia

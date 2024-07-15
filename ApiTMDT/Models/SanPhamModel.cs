@@ -6,7 +6,7 @@ namespace ApiTMDT.Models
     public class SanPhamModel
     {
         [Key]
-        public int Id { get; set; }
+        public int MaSP { get; set; }
 
         [Required]
         public string Ten_SP { get; set; }
@@ -24,5 +24,6 @@ namespace ApiTMDT.Models
         [NotMapped]
         public IFormFile ImageFile { get; set; }
         public virtual ICollection<ChiTietHoaDon> ChiTietHoaDons { get; set; }
+        public virtual ICollection<ChiTietGioHang> ChiTietGioHang { get; set; }
     }
 }

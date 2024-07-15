@@ -64,7 +64,7 @@ namespace ApiTMDT.Migrations
                 name: "SanPham",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    MaSP = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Ten_SP = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Gia = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -75,7 +75,7 @@ namespace ApiTMDT.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SanPham", x => x.Id);
+                    table.PrimaryKey("PK_SanPham", x => x.MaSP);
                 });
 
             migrationBuilder.CreateTable(
@@ -108,6 +108,25 @@ namespace ApiTMDT.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GioHangs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MaKH = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GioHangs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GioHangs_KhachHangs_MaKH",
+                        column: x => x.MaKH,
+                        principalTable: "KhachHangs",
+                        principalColumn: "MaKH",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,6 +187,33 @@ namespace ApiTMDT.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ChiTietGioHangs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GioHangId = table.Column<int>(type: "int", nullable: false),
+                    MaSP = table.Column<int>(type: "int", nullable: false),
+                    SoLuong = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChiTietGioHangs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ChiTietGioHangs_GioHangs_GioHangId",
+                        column: x => x.GioHangId,
+                        principalTable: "GioHangs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ChiTietGioHangs_SanPham_MaSP",
+                        column: x => x.MaSP,
+                        principalTable: "SanPham",
+                        principalColumn: "MaSP",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ChiTietHoaDons",
                 columns: table => new
                 {
@@ -193,7 +239,7 @@ namespace ApiTMDT.Migrations
                         name: "FK_ChiTietHoaDons_SanPham_MaSP",
                         column: x => x.MaSP,
                         principalTable: "SanPham",
-                        principalColumn: "Id",
+                        principalColumn: "MaSP",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -225,6 +271,16 @@ namespace ApiTMDT.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_ChiTietGioHangs_GioHangId",
+                table: "ChiTietGioHangs",
+                column: "GioHangId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChiTietGioHangs_MaSP",
+                table: "ChiTietGioHangs",
+                column: "MaSP");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ChiTietHoaDons_MaHD",
                 table: "ChiTietHoaDons",
                 column: "MaHD");
@@ -233,6 +289,11 @@ namespace ApiTMDT.Migrations
                 name: "IX_ChiTietHoaDons_MaSP",
                 table: "ChiTietHoaDons",
                 column: "MaSP");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GioHangs_MaKH",
+                table: "GioHangs",
+                column: "MaKH");
 
             migrationBuilder.CreateIndex(
                 name: "IX_HoaDons_MaKH",
@@ -258,6 +319,9 @@ namespace ApiTMDT.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ChiTietGioHangs");
+
+            migrationBuilder.DropTable(
                 name: "ChiTietHoaDons");
 
             migrationBuilder.DropTable(
@@ -268,6 +332,9 @@ namespace ApiTMDT.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "GioHangs");
 
             migrationBuilder.DropTable(
                 name: "HoaDons");

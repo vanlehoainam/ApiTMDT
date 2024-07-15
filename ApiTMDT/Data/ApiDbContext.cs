@@ -18,6 +18,8 @@ namespace Data
         public DbSet<KhachHang> KhachHangs { get; set; }
         public DbSet<HoaDon> HoaDons { get; set; }
         public DbSet<ChiTietHoaDon> ChiTietHoaDons { get; set; }
+        public DbSet<GioHang> GioHangs { get; set; }
+        public DbSet<ChiTietGioHang> ChiTietGioHangs { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -26,6 +28,10 @@ namespace Data
                 .HasMany(h => h.ChiTietHoaDons)
                 .WithOne(ct => ct.HoaDon)
                 .HasForeignKey(ct => ct.MaHD);
+            modelBuilder.Entity<GioHang>()
+               .HasMany(g => g.ChiTietGioHangs)
+               .WithOne(ct => ct.GioHang)
+               .HasForeignKey(ct => ct.GioHangId);
         }
 
     }

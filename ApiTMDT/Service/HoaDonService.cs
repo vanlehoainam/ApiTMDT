@@ -1,6 +1,10 @@
 ﻿using ApiTMDT.Models;
 using Data;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ApiTMDT.Service
 {
@@ -94,6 +98,79 @@ namespace ApiTMDT.Service
             }
 
             return (hoaDons, "Tìm kiếm thành công.");
+        }
+
+        public async Task<(HoaDon hoaDon, string message)> CreateHoaDonWithDetailsAsync(HoaDon hoaDon, List<ChiTietHoaDon> chiTietHoaDons)
+        {
+            _context.HoaDons.Add(hoaDon);
+            await _context.SaveChangesAsync();
+
+            foreach (var chiTietHoaDon in chiTietHoaDons)
+            {
+                chiTietHoaDon.MaHD = hoaDon.MaHD;
+                _context.ChiTietHoaDons.Add(chiTietHoaDon);
+            }
+
+            await _context.SaveChangesAsync();
+
+            var createdHoaDon = await _context.HoaDons
+                .Include(hd => hd.KhachHang)
+                .Include(hd => hd.ChiTietHoaDons)
+                .FirstOrDefaultAsync(hd => hd.MaHD == hoaDon.MaHD);
+
+            return (createdHoaDon, "Tạo hóa đơn với chi tiết thành công.");
+        }
+
+        public async Task<string> AddToHoaDonAsync(int maHD, int maSP, int soLuong)
+        {
+            var hoaDon = await _context.HoaDons.FirstOrDefaultAsync(hd => hd.MaHD == maHD);
+            if (hoaDon == null)
+            {
+                return "Hóa đơn không tồn tại.";
+            }
+
+            var chiTietHoaDon = new ChiTietHoaDon
+            {
+                MaHD = hoaDon.MaHD,
+                MaSP = maSP,
+                SoLuong = soLuong
+            };
+            _context.ChiTietHoaDons.Add(chiTietHoaDon);
+            await _context.SaveChangesAsync();
+
+            return "Sản phẩm đã được thêm vào hóa đơn.";
+        }
+
+        public async Task AddOrUpdateHoaDonAsync(int maHD, int sanPhamId, int soLuong)
+        {
+            var hoaDon = await _context.HoaDons
+                .Include(hd => hd.ChiTietHoaDons)
+                .FirstOrDefaultAsync(hd => hd.MaHD == maHD);
+
+            if (hoaDon == null)
+            {
+                return;
+            }
+
+            var chiTietHoaDon = hoaDon.ChiTietHoaDons
+                .FirstOrDefault(ct => ct.MaSP == sanPhamId);
+
+            if (chiTietHoaDon != null)
+            {
+                chiTietHoaDon.SoLuong += soLuong;
+            }
+            else
+            {
+                chiTietHoaDon = new ChiTietHoaDon
+                {
+                    MaHD = hoaDon.MaHD,
+                    MaSP = sanPhamId,
+                    SoLuong = soLuong
+                };
+                _context.ChiTietHoaDons.Add(chiTietHoaDon);
+            }
+
+            await _context.SaveChangesAsync();
         }
     }
 }
