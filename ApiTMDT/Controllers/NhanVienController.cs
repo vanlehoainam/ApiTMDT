@@ -50,10 +50,9 @@ namespace ApiTMDT.Controllers
                 SoDienThoai = createNhanVien.SoDienThoai,
                 Email = createNhanVien.Email,
                 Luong = createNhanVien.Luong,
-                MaTDHV = createNhanVien.MaTDHV,
-                MaHD = createNhanVien.MaHD,
+                MaTDHV = createNhanVien.MaTDHV,                
                 MaPB = createNhanVien.MaPB,
-                MaNP = createNhanVien.MaNP,
+         
             };
 
             var result = await _nhanVienService.CreateNhanVienAsync(nhanVien);
@@ -64,8 +63,7 @@ namespace ApiTMDT.Controllers
             }
 
             var nhanVienWithDetails = await _context.NhanVien
-                .Include(nv => nv.TrinhDoHocVan)
-                .Include(nv => nv.HopDongLaoDong)
+                .Include(nv => nv.TrinhDoHocVan)              
                 .Include(nv => nv.PhongBan)
                 .FirstOrDefaultAsync(nv => nv.MaNV == nhanVien.MaNV);
 
@@ -74,8 +72,7 @@ namespace ApiTMDT.Controllers
                 data = new
                 {
                     nhanVien = nhanVienWithDetails,
-                    trinhDoHocVan = nhanVienWithDetails.TrinhDoHocVan,
-                    hopDongLaoDong = nhanVienWithDetails.HopDongLaoDong,
+                    trinhDoHocVan = nhanVienWithDetails.TrinhDoHocVan,                   
                     phongBan = nhanVienWithDetails.PhongBan
                 },
                 message = result.message
@@ -147,8 +144,7 @@ namespace ApiTMDT.Controllers
 
             public int? MaPB { get; set; }  
                   
-            public int? MaHD { get; set; }
-            public int? MaNP { get; set; }
+          
 
         }
     }

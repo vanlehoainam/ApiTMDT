@@ -104,17 +104,7 @@ namespace ApiTMDT.Controllers
                 message = result.message
             });
         }
-        [HttpGet("ExportPdf/{id}")]
-        public async Task<IActionResult> ExportPdf(int id)
-        {
-            var pdf = await _hoaDonService.GeneratePdfFromHoaDonAsync(id);
-            if (pdf == null)
-            {
-                return NotFound(new { message = "Hóa đơn không tồn tại" });
-            }
-
-            return File(pdf, "application/pdf", $"HoaDon_{id}.pdf");
-        }
+      
 
         public class CreateHoaDon
         {

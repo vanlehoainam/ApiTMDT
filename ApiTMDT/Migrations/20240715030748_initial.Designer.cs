@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiTMDT.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20240709041528_initial")]
+    [Migration("20240715030748_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -241,12 +241,6 @@ namespace ApiTMDT.Migrations
                     b.Property<int>("Luong")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MaHD")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MaNP")
-                        .HasColumnType("int");
-
                     b.Property<int?>("MaPB")
                         .HasColumnType("int");
 
@@ -267,10 +261,6 @@ namespace ApiTMDT.Migrations
                         .HasColumnType("nvarchar(10)");
 
                     b.HasKey("MaNV");
-
-                    b.HasIndex("MaHD");
-
-                    b.HasIndex("MaNP");
 
                     b.HasIndex("MaPB");
 
@@ -302,9 +292,6 @@ namespace ApiTMDT.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int?>("MaTP")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("NgayThanhLap")
                         .HasColumnType("datetime2");
 
@@ -319,8 +306,6 @@ namespace ApiTMDT.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("MaPB");
-
-                    b.HasIndex("MaTP");
 
                     b.ToTable("PhongBan");
                 });
@@ -464,14 +449,6 @@ namespace ApiTMDT.Migrations
 
             modelBuilder.Entity("ApiTMDT.Models.NhanVien", b =>
                 {
-                    b.HasOne("ApiTMDT.Models.HopDongLaoDong", "HopDongLaoDong")
-                        .WithMany()
-                        .HasForeignKey("MaHD");
-
-                    b.HasOne("ApiTMDT.Models.NghiPhep", "NghiPhep")
-                        .WithMany()
-                        .HasForeignKey("MaNP");
-
                     b.HasOne("ApiTMDT.Models.PhongBan", "PhongBan")
                         .WithMany()
                         .HasForeignKey("MaPB");
@@ -480,22 +457,9 @@ namespace ApiTMDT.Migrations
                         .WithMany()
                         .HasForeignKey("MaTDHV");
 
-                    b.Navigation("HopDongLaoDong");
-
-                    b.Navigation("NghiPhep");
-
                     b.Navigation("PhongBan");
 
                     b.Navigation("TrinhDoHocVan");
-                });
-
-            modelBuilder.Entity("ApiTMDT.Models.PhongBan", b =>
-                {
-                    b.HasOne("ApiTMDT.Models.NhanVien", "TruongPhong")
-                        .WithMany()
-                        .HasForeignKey("MaTP");
-
-                    b.Navigation("TruongPhong");
                 });
 
             modelBuilder.Entity("ApiTMDT.Models.HoaDon", b =>

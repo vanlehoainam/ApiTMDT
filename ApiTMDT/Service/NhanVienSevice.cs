@@ -23,9 +23,8 @@ namespace ApiTMDT.Service
         {
             return await _context.NhanVien
                .Include(nv => nv.TrinhDoHocVan)
-                .Include(nv => nv.PhongBan)
-                .Include(nv => nv.HopDongLaoDong)
-                .Include(nv => nv.NghiPhep)
+                .Include(nv => nv.PhongBan)               
+               
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -78,7 +77,7 @@ namespace ApiTMDT.Service
                 Luong = existingNhanVien.Luong,
                 MaTDHV = existingNhanVien.MaTDHV,
                 MaPB = existingNhanVien.MaPB,
-                MaHD = existingNhanVien.MaHD
+                
             };
 
             existingNhanVien.HoTen = nhanVienUpdate.HoTen;
@@ -92,7 +91,7 @@ namespace ApiTMDT.Service
             existingNhanVien.Luong = nhanVienUpdate.Luong;
             existingNhanVien.MaTDHV = nhanVienUpdate.MaTDHV;
             existingNhanVien.MaPB = nhanVienUpdate.MaPB;
-            existingNhanVien.MaHD = nhanVienUpdate.MaHD;
+       
 
             _context.NhanVien.Update(existingNhanVien);
             await _context.SaveChangesAsync();

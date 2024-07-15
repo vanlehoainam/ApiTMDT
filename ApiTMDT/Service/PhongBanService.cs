@@ -21,7 +21,7 @@ namespace ApiTMDT.Service
         public async Task<List<PhongBan>> GetAllPhongBansAsync(int pageNumber = 1, int pageSize = 5)
         {
             return await _context.PhongBan
-                .Include(pb => pb.TruongPhong)
+                
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -64,12 +64,12 @@ namespace ApiTMDT.Service
                 MaPB = existingPhongBan.MaPB,
                 TenPB = existingPhongBan.TenPB,
                 SDT = existingPhongBan.SDT,
-                MaTP = existingPhongBan.MaTP
+               
             };
 
             existingPhongBan.TenPB = phongBanUpdate.TenPB;
             existingPhongBan.SDT = phongBanUpdate.SDT;
-            existingPhongBan.MaTP = phongBanUpdate.MaTP;
+          
 
             _context.PhongBan.Update(existingPhongBan);
             await _context.SaveChangesAsync();

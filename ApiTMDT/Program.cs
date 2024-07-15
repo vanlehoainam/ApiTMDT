@@ -1,17 +1,13 @@
 ﻿using ApiTMDT.Repositories;
 using ApiTMDT.Service;
 using Data;
-using DinkToPdf.Contracts;
-using DinkToPdf;
 using Microsoft.AspNet.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.Design.Serialization;
 using System.Text.Json.Serialization;
 
-
 var builder = WebApplication.CreateBuilder(args);
-// Add services to the container.
 
+// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -40,11 +36,6 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 builder.Services.AddDbContext<ApiDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
-// Cấu hình DinkToPdf
-var context = new CustomAssemblyLoadContext();
-var absolutePath = @"D:\3S HUE\APITMDT\ApiTMDT\ApiTMDT\bin\Debug\net6.0\libwkhtmltox.dll";
-context.LoadUnmanagedLibrary(absolutePath);
-builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
 // Build the application
 var app = builder.Build();

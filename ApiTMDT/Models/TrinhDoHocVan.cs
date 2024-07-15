@@ -11,8 +11,8 @@ namespace ApiTMDT.Models
         [StringLength(100)] 
         public string TenTDHV { get; set; }
 
-            [Required]
-            [StringLength(100)] 
+        [Required]
+        [StringLength(100)] 
         public string TenTDNN { get; set; }
 
         [StringLength(500)] 

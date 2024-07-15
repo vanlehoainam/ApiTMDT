@@ -36,7 +36,6 @@ namespace ApiTMDT.Models
         [StringLength(100)] 
         public string Email { get; set; }
 
-        [Range(0, int.MaxValue, ErrorMessage = "Lương phải là số Dương.")]
         public int Luong { get; set; }
 
         [ForeignKey("TrinhDoHocVan")]
@@ -45,16 +44,7 @@ namespace ApiTMDT.Models
 
         [ForeignKey("PhongBan")]
         public int? MaPB { get; set; }
-        public virtual PhongBan PhongBan { get; set; }
-
-        [ForeignKey("HopDongLaoDong")]
-        public int? MaHD { get; set; }
-        public virtual HopDongLaoDong HopDongLaoDong { get; set; }
-
-        [ForeignKey("NghiPhep")]
-        public int? MaNP { get; set; }
-        public virtual NghiPhep NghiPhep { get; set; }
-
-
+        public virtual PhongBan PhongBan { get; set; }  
+       
     }
 }

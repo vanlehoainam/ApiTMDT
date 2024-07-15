@@ -28,11 +28,7 @@ namespace ApiTMDT.Models
 
         [StringLength(500)]
         public string GhiChu { get; set; }
-
-        public int? MaTP { get; set; }
-
-        [ForeignKey("MaTP")]
-        public virtual NhanVien TruongPhong { get; set; }
+        
 
     }
 }
