@@ -1,23 +1,28 @@
-﻿using System.Reflection;
+﻿using System.Runtime.InteropServices;
+using System.Reflection;
+using System.IO;
 using System.Runtime.Loader;
 
-namespace ApiTMDT.Data
+public class CustomAssemblyLoadContext : AssemblyLoadContext
 {
-    public class CustomAssemblyLoadContext : AssemblyLoadContext
+    public IntPtr LoadUnmanagedLibrary(string absolutePath)
     {
-        public IntPtr LoadUnmanagedLibrary(string absolutePath)
+        if (!File.Exists(absolutePath))
         {
-            return LoadUnmanagedDll(absolutePath);
+            throw new FileNotFoundException($"The specified DLL '{absolutePath}' was not found.");
         }
 
-        protected override IntPtr LoadUnmanagedDll(string unmanagedDllName)
-        {
-            return LoadUnmanagedDllFromPath(unmanagedDllName);
-        }
+        return LoadUnmanagedDll(absolutePath);
+    }
 
-        protected override Assembly Load(AssemblyName assemblyName)
-        {
-            throw new NotImplementedException();
-        }
+/*    protected override IntPtr LoadUnmanagedDll(string unmanagedDllName)
+    {
+        return LoadUnmanagedDllFromPath(unmanagedDllName);
+    }
+*/
+    protected override Assembly Load(AssemblyName assemblyName)
+    {
+        throw new NotImplementedException();
     }
 }
+

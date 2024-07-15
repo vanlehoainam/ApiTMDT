@@ -20,6 +20,7 @@
     <PackageReference Include="DinkToPdf" Version="1.0.8" />
     <PackageReference Include="EO.WebBrowser" Version="24.1.46" />
     <PackageReference Include="Fluent.Infrastructure" Version="2.0.0-beta-01" />
+    <PackageReference Include="LibWkHtmlToX-32" Version="0.12.6.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.31" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.39" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.31" />
@@ -35,6 +36,7 @@
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.10.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageReference Include="Wkhtmltopdf.NetCore" Version="3.0.2" />
   </ItemGroup>
 
   <ItemGroup>
