@@ -20,6 +20,10 @@ namespace Data
         public DbSet<ChiTietHoaDon> ChiTietHoaDons { get; set; }
         public DbSet<GioHang> GioHangs { get; set; }
         public DbSet<ChiTietGioHang> ChiTietGioHangs { get; set; }
+        public DbSet<KhuyenMai> KhuyenMais { get; set; }
+        public DbSet<SanPhamKhuyenMai> SanPhamKhuyenMais { get; set; }
+        public DbSet<BinhLuan> BinhLuans { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -32,7 +36,29 @@ namespace Data
                .HasMany(g => g.ChiTietGioHangs)
                .WithOne(ct => ct.GioHang)
                .HasForeignKey(ct => ct.GioHangId);
-        }
 
+            modelBuilder.Entity<SanPhamKhuyenMai>()
+               .HasKey(spkm => new { spkm.MaKM, spkm.MaSP });
+
+            modelBuilder.Entity<SanPhamKhuyenMai>()
+                .HasOne(spkm => spkm.KhuyenMai)
+                .WithMany(km => km.SanPhamKhuyenMais)
+                .HasForeignKey(spkm => spkm.MaKM);
+
+            modelBuilder.Entity<SanPhamKhuyenMai>()
+                .HasOne(spkm => spkm.SanPham)
+                .WithMany(sp => sp.SanPhamKhuyenMais)
+                .HasForeignKey(spkm => spkm.MaSP);
+
+            modelBuilder.Entity<BinhLuan>()
+                .HasOne(bl => bl.KhachHang)
+                .WithMany(kh => kh.BinhLuans)
+                .HasForeignKey(bl => bl.MaKH);
+
+            modelBuilder.Entity<BinhLuan>()
+                .HasOne(bl => bl.SanPham)
+                .WithMany(sp => sp.BinhLuans)
+                .HasForeignKey(bl => bl.MaSP);
+        }
     }
 }

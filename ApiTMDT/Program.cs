@@ -30,6 +30,8 @@ builder.Services.AddScoped<KhachHangSevice>();
 builder.Services.AddScoped<HoaDonService>();
 builder.Services.AddScoped<ChiTietHoaDonService>();
 builder.Services.AddScoped<GioHangService>();
+builder.Services.AddScoped<BinhLuanService>();
+builder.Services.AddScoped<KhuyenMaiService>();
 
 builder.Services.AddControllers().AddJsonOptions(x =>
    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);

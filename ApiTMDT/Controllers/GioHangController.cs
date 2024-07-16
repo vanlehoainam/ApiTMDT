@@ -15,13 +15,6 @@ namespace ApiTMDT.Controllers
             _gioHangService = gioHangService;
         }
 
-        [HttpPost("AddToCart")]
-        public async Task<IActionResult> AddToCart(int maKH, int sanPhamId, int soLuong)
-        {
-            await _gioHangService.AddOrUpdateGioHangAsync(maKH, sanPhamId, soLuong);
-            return Ok("Sản phẩm đã được thêm vào giỏ hàng.");
-        }
-
         [HttpGet("{maKH}")]
         public async Task<IActionResult> GetGioHang(int maKH)
         {
@@ -33,6 +26,12 @@ namespace ApiTMDT.Controllers
 
             return Ok(gioHang);
         }
+        [HttpPost("AddToCart")]
+        public async Task<IActionResult> AddToCart(int maKH, int sanPhamId, int soLuong)
+        {
+            await _gioHangService.AddOrUpdateGioHangAsync(maKH, sanPhamId, soLuong);
+            return Ok("Sản phẩm đã được thêm vào giỏ hàng.");
+        }      
        
     }
 }

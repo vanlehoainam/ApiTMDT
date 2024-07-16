@@ -22,6 +22,40 @@ namespace ApiTMDT.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("ApiTMDT.Models.BinhLuan", b =>
+                {
+                    b.Property<int>("MaBL")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaBL"), 1L, 1);
+
+                    b.Property<int>("DiemDanhGia")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaKH")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaSP")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("NgayDang")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NoiDung")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("MaBL");
+
+                    b.HasIndex("MaKH");
+
+                    b.HasIndex("MaSP");
+
+                    b.ToTable("BinhLuans");
+                });
+
             modelBuilder.Entity("ApiTMDT.Models.ChiTietGioHang", b =>
                 {
                     b.Property<int>("Id")
@@ -219,6 +253,43 @@ namespace ApiTMDT.Migrations
                     b.ToTable("KhachHangs");
                 });
 
+            modelBuilder.Entity("ApiTMDT.Models.KhuyenMai", b =>
+                {
+                    b.Property<int>("MaKM")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaKM"), 1L, 1);
+
+                    b.Property<string>("MoTa")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("NgayBatDau")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("NgayKetThuc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("PhanTramGiam")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("TenKM")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("TrangThai")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("MaKM");
+
+                    b.ToTable("KhuyenMais");
+                });
+
             modelBuilder.Entity("ApiTMDT.Models.NghiPhep", b =>
                 {
                     b.Property<int>("MaNP")
@@ -352,6 +423,32 @@ namespace ApiTMDT.Migrations
                     b.ToTable("PhongBan");
                 });
 
+            modelBuilder.Entity("ApiTMDT.Models.SanPhamKhuyenMai", b =>
+                {
+                    b.Property<int>("MaKM")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaSP")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaSPKM")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SanPhamKhuyenMaiMaKM")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SanPhamKhuyenMaiMaSP")
+                        .HasColumnType("int");
+
+                    b.HasKey("MaKM", "MaSP");
+
+                    b.HasIndex("MaSP");
+
+                    b.HasIndex("SanPhamKhuyenMaiMaKM", "SanPhamKhuyenMaiMaSP");
+
+                    b.ToTable("SanPhamKhuyenMais");
+                });
+
             modelBuilder.Entity("ApiTMDT.Models.SanPhamModel", b =>
                 {
                     b.Property<int>("MaSP")
@@ -448,6 +545,25 @@ namespace ApiTMDT.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("ApiTMDT.Models.BinhLuan", b =>
+                {
+                    b.HasOne("ApiTMDT.Models.KhachHang", "KhachHang")
+                        .WithMany("BinhLuans")
+                        .HasForeignKey("MaKH")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ApiTMDT.Models.SanPhamModel", "SanPham")
+                        .WithMany("BinhLuans")
+                        .HasForeignKey("MaSP")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("KhachHang");
+
+                    b.Navigation("SanPham");
+                });
+
             modelBuilder.Entity("ApiTMDT.Models.ChiTietGioHang", b =>
                 {
                     b.HasOne("ApiTMDT.Models.GioHang", "GioHang")
@@ -534,6 +650,29 @@ namespace ApiTMDT.Migrations
                     b.Navigation("TrinhDoHocVan");
                 });
 
+            modelBuilder.Entity("ApiTMDT.Models.SanPhamKhuyenMai", b =>
+                {
+                    b.HasOne("ApiTMDT.Models.KhuyenMai", "KhuyenMai")
+                        .WithMany("SanPhamKhuyenMais")
+                        .HasForeignKey("MaKM")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ApiTMDT.Models.SanPhamModel", "SanPham")
+                        .WithMany("SanPhamKhuyenMais")
+                        .HasForeignKey("MaSP")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ApiTMDT.Models.SanPhamKhuyenMai", null)
+                        .WithMany("SanPhamKhuyenMais")
+                        .HasForeignKey("SanPhamKhuyenMaiMaKM", "SanPhamKhuyenMaiMaSP");
+
+                    b.Navigation("KhuyenMai");
+
+                    b.Navigation("SanPham");
+                });
+
             modelBuilder.Entity("ApiTMDT.Models.GioHang", b =>
                 {
                     b.Navigation("ChiTietGioHangs");
@@ -546,16 +685,32 @@ namespace ApiTMDT.Migrations
 
             modelBuilder.Entity("ApiTMDT.Models.KhachHang", b =>
                 {
+                    b.Navigation("BinhLuans");
+
                     b.Navigation("GioHangs");
 
                     b.Navigation("HoaDons");
                 });
 
+            modelBuilder.Entity("ApiTMDT.Models.KhuyenMai", b =>
+                {
+                    b.Navigation("SanPhamKhuyenMais");
+                });
+
+            modelBuilder.Entity("ApiTMDT.Models.SanPhamKhuyenMai", b =>
+                {
+                    b.Navigation("SanPhamKhuyenMais");
+                });
+
             modelBuilder.Entity("ApiTMDT.Models.SanPhamModel", b =>
                 {
+                    b.Navigation("BinhLuans");
+
                     b.Navigation("ChiTietGioHang");
 
                     b.Navigation("ChiTietHoaDons");
+
+                    b.Navigation("SanPhamKhuyenMais");
                 });
 #pragma warning restore 612, 618
         }

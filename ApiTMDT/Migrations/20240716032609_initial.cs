@@ -26,6 +26,24 @@ namespace ApiTMDT.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "KhuyenMais",
+                columns: table => new
+                {
+                    MaKM = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TenKM = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    MoTa = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    NgayBatDau = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    NgayKetThuc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PhanTramGiam = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TrangThai = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_KhuyenMais", x => x.MaKM);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "NghiPhep",
                 columns: table => new
                 {
@@ -154,6 +172,67 @@ namespace ApiTMDT.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BinhLuans",
+                columns: table => new
+                {
+                    MaBL = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NoiDung = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    NgayDang = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MaKH = table.Column<int>(type: "int", nullable: false),
+                    MaSP = table.Column<int>(type: "int", nullable: false),
+                    DiemDanhGia = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BinhLuans", x => x.MaBL);
+                    table.ForeignKey(
+                        name: "FK_BinhLuans_KhachHangs_MaKH",
+                        column: x => x.MaKH,
+                        principalTable: "KhachHangs",
+                        principalColumn: "MaKH",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BinhLuans_SanPham_MaSP",
+                        column: x => x.MaSP,
+                        principalTable: "SanPham",
+                        principalColumn: "MaSP",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SanPhamKhuyenMais",
+                columns: table => new
+                {
+                    MaKM = table.Column<int>(type: "int", nullable: false),
+                    MaSP = table.Column<int>(type: "int", nullable: false),
+                    MaSPKM = table.Column<int>(type: "int", nullable: false),
+                    SanPhamKhuyenMaiMaKM = table.Column<int>(type: "int", nullable: true),
+                    SanPhamKhuyenMaiMaSP = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SanPhamKhuyenMais", x => new { x.MaKM, x.MaSP });
+                    table.ForeignKey(
+                        name: "FK_SanPhamKhuyenMais_KhuyenMais_MaKM",
+                        column: x => x.MaKM,
+                        principalTable: "KhuyenMais",
+                        principalColumn: "MaKM",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SanPhamKhuyenMais_SanPham_MaSP",
+                        column: x => x.MaSP,
+                        principalTable: "SanPham",
+                        principalColumn: "MaSP",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SanPhamKhuyenMais_SanPhamKhuyenMais_SanPhamKhuyenMaiMaKM_SanPhamKhuyenMaiMaSP",
+                        columns: x => new { x.SanPhamKhuyenMaiMaKM, x.SanPhamKhuyenMaiMaSP },
+                        principalTable: "SanPhamKhuyenMais",
+                        principalColumns: new[] { "MaKM", "MaSP" });
+                });
+
+            migrationBuilder.CreateTable(
                 name: "NhanVien",
                 columns: table => new
                 {
@@ -271,6 +350,16 @@ namespace ApiTMDT.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_BinhLuans_MaKH",
+                table: "BinhLuans",
+                column: "MaKH");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BinhLuans_MaSP",
+                table: "BinhLuans",
+                column: "MaSP");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ChiTietGioHangs_GioHangId",
                 table: "ChiTietGioHangs",
                 column: "GioHangId");
@@ -314,10 +403,23 @@ namespace ApiTMDT.Migrations
                 name: "IX_NhanVien_MaTDHV",
                 table: "NhanVien",
                 column: "MaTDHV");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SanPhamKhuyenMais_MaSP",
+                table: "SanPhamKhuyenMais",
+                column: "MaSP");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SanPhamKhuyenMais_SanPhamKhuyenMaiMaKM_SanPhamKhuyenMaiMaSP",
+                table: "SanPhamKhuyenMais",
+                columns: new[] { "SanPhamKhuyenMaiMaKM", "SanPhamKhuyenMaiMaSP" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "BinhLuans");
+
             migrationBuilder.DropTable(
                 name: "ChiTietGioHangs");
 
@@ -331,6 +433,9 @@ namespace ApiTMDT.Migrations
                 name: "NghiPhep");
 
             migrationBuilder.DropTable(
+                name: "SanPhamKhuyenMais");
+
+            migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
@@ -340,10 +445,13 @@ namespace ApiTMDT.Migrations
                 name: "HoaDons");
 
             migrationBuilder.DropTable(
-                name: "SanPham");
+                name: "NhanVien");
 
             migrationBuilder.DropTable(
-                name: "NhanVien");
+                name: "KhuyenMais");
+
+            migrationBuilder.DropTable(
+                name: "SanPham");
 
             migrationBuilder.DropTable(
                 name: "KhachHangs");

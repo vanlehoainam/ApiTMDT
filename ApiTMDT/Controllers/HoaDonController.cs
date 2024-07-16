@@ -3,6 +3,7 @@ using ApiTMDT.Service;
 using Data;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,9 +24,9 @@ namespace ApiTMDT.Controllers
         }
 
         [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(int pageNumber = 1, int pageSize = 5)
         {
-            var hoaDons = await _hoaDonService.GetAllHoaDonsAsync();
+            var hoaDons = await _hoaDonService.GetAllHoaDonsAsync(pageNumber, pageSize);
             return Ok(hoaDons);
         }
 
@@ -42,7 +43,7 @@ namespace ApiTMDT.Controllers
                 GhiChu = createHoaDon.GhiChu
             };
 
-            var result = await _hoaDonService.CreateHoaDonWithDetailsAsync(hoaDon, createHoaDon.ChiTietHoaDons);
+            var result = await _hoaDonService.CreateHoaDonAsync(hoaDon);
 
             if (result.hoaDon == null)
             {
@@ -127,8 +128,6 @@ namespace ApiTMDT.Controllers
 
             [StringLength(500)]
             public string GhiChu { get; set; }
-
-            public List<ChiTietHoaDon> ChiTietHoaDons { get; set; }
         }
 
         public class UpdateHoaDon

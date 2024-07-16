@@ -17,5 +17,7 @@ namespace ApiTMDT.Models
         public virtual ICollection<HoaDon> HoaDons { get; set; }
         [JsonIgnore]
         public virtual ICollection<GioHang> GioHangs { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<BinhLuan> BinhLuans { get; set; }
     }
 }

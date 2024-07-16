@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+using System.Text.Json.Serialization;
 namespace ApiTMDT.Models
 {
     public class SanPhamModel
@@ -23,7 +24,13 @@ namespace ApiTMDT.Models
 
         [NotMapped]
         public IFormFile ImageFile { get; set; }
+        [JsonIgnore]
         public virtual ICollection<ChiTietHoaDon> ChiTietHoaDons { get; set; }
+        [JsonIgnore]
         public virtual ICollection<ChiTietGioHang> ChiTietGioHang { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<BinhLuan> BinhLuans { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<SanPhamKhuyenMai> SanPhamKhuyenMais { get; set; }
     }
 }
