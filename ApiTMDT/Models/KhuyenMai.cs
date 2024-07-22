@@ -31,6 +31,6 @@ namespace ApiTMDT.Models
         public string TrangThai { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<SanPhamModel> SanPhamModels { get; set; }
+        public virtual ICollection<SanPhamModel> SanPhamModels { get; set; }  
     }
 }

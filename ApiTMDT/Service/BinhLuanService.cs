@@ -16,7 +16,7 @@ namespace ApiTMDT.Service
             _context = context;
         }
 
-        public async Task<List<BinhLuan>> GetAllBinhLuansAsync(int pageNumber = 1, int pageSize = 5)
+        public async Task<List<BinhLuan>> GetAllBinhLuansAsync(int pageNumber = 1, int pageSize = 10)
         {
             return await _context.BinhLuans
                 .Include(bl => bl.KhachHang)

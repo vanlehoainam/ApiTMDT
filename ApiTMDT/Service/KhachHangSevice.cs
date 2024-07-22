@@ -20,7 +20,7 @@ namespace ApiTMDT.Service
             _context = context;
         }
 
-        public async Task<List<KhachHang>> GetAllKhachHangsAsync(int pageNumber = 1, int pageSize = 5)
+        public async Task<List<KhachHang>> GetAllKhachHangsAsync(int pageNumber = 1, int pageSize = 10)
         {
             return await _context.KhachHangs
                 .Skip((pageNumber - 1) * pageSize)

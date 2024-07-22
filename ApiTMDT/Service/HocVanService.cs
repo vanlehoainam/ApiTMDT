@@ -15,7 +15,7 @@ namespace ApiTMDT.Service
             _context = context;
         }
 
-        public async Task<List<TrinhDoHocVan>> GetAllHocVansAsync(int pageNumber = 1, int pageSize = 5)
+        public async Task<List<TrinhDoHocVan>> GetAllHocVansAsync(int pageNumber = 1, int pageSize = 10)
         {
             return await _context.TrinhDoHocVan
                 .Skip((pageNumber - 1) * pageSize)

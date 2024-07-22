@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -38,10 +39,7 @@ namespace ApiTMDT.Models
         [JsonIgnore]
         public virtual ICollection<BinhLuan> BinhLuans { get; set; }
 
-        [ForeignKey("KhuyenMai")]
-        public int? MaKM { get; set; }
-
         [JsonIgnore]
-        public virtual KhuyenMai KhuyenMai { get; set; }
+        public virtual ICollection<KhuyenMai> KhuyenMais { get; set; }  
     }
 }

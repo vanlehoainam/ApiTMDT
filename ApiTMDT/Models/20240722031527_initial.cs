@@ -201,18 +201,42 @@ namespace ApiTMDT.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SanPhamKhuyenMais",
+                name: "SanPhamKhuyenMai",
                 columns: table => new
                 {
                     MaKM = table.Column<int>(type: "int", nullable: false),
-                    MaSP = table.Column<int>(type: "int", nullable: false),
-                    MaSPKM = table.Column<int>(type: "int", nullable: false),
-                    SanPhamKhuyenMaiMaKM = table.Column<int>(type: "int", nullable: true),
-                    SanPhamKhuyenMaiMaSP = table.Column<int>(type: "int", nullable: true)
+                    MaSP = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SanPhamKhuyenMais", x => new { x.MaKM, x.MaSP });
+                    table.PrimaryKey("PK_SanPhamKhuyenMai", x => new { x.MaKM, x.MaSP });
+                    table.ForeignKey(
+                        name: "FK_SanPhamKhuyenMai_KhuyenMai_MaKM",
+                        column: x => x.MaKM,
+                        principalTable: "KhuyenMais",
+                        principalColumn: "MaKM",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SanPhamKhuyenMai_SanPhamModel_MaSP",
+                        column: x => x.MaSP,
+                        principalTable: "SanPham",
+                        principalColumn: "MaSP",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SanPhamKhuyenMais",
+                columns: table => new
+                {
+                    MaSPKM = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MaKM = table.Column<int>(type: "int", nullable: false),
+                    MaSP = table.Column<int>(type: "int", nullable: false),
+                    SanPhamKhuyenMaiMaSPKM = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SanPhamKhuyenMais", x => x.MaSPKM);
                     table.ForeignKey(
                         name: "FK_SanPhamKhuyenMais_KhuyenMais_MaKM",
                         column: x => x.MaKM,
@@ -226,10 +250,10 @@ namespace ApiTMDT.Migrations
                         principalColumn: "MaSP",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SanPhamKhuyenMais_SanPhamKhuyenMais_SanPhamKhuyenMaiMaKM_SanPhamKhuyenMaiMaSP",
-                        columns: x => new { x.SanPhamKhuyenMaiMaKM, x.SanPhamKhuyenMaiMaSP },
+                        name: "FK_SanPhamKhuyenMais_SanPhamKhuyenMais_SanPhamKhuyenMaiMaSPKM",
+                        column: x => x.SanPhamKhuyenMaiMaSPKM,
                         principalTable: "SanPhamKhuyenMais",
-                        principalColumns: new[] { "MaKM", "MaSP" });
+                        principalColumn: "MaSPKM");
                 });
 
             migrationBuilder.CreateTable(
@@ -405,14 +429,24 @@ namespace ApiTMDT.Migrations
                 column: "MaTDHV");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SanPhamKhuyenMai_MaSP",
+                table: "SanPhamKhuyenMai",
+                column: "MaSP");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SanPhamKhuyenMais_MaKM",
+                table: "SanPhamKhuyenMais",
+                column: "MaKM");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SanPhamKhuyenMais_MaSP",
                 table: "SanPhamKhuyenMais",
                 column: "MaSP");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SanPhamKhuyenMais_SanPhamKhuyenMaiMaKM_SanPhamKhuyenMaiMaSP",
+                name: "IX_SanPhamKhuyenMais_SanPhamKhuyenMaiMaSPKM",
                 table: "SanPhamKhuyenMais",
-                columns: new[] { "SanPhamKhuyenMaiMaKM", "SanPhamKhuyenMaiMaSP" });
+                column: "SanPhamKhuyenMaiMaSPKM");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -431,6 +465,9 @@ namespace ApiTMDT.Migrations
 
             migrationBuilder.DropTable(
                 name: "NghiPhep");
+
+            migrationBuilder.DropTable(
+                name: "SanPhamKhuyenMai");
 
             migrationBuilder.DropTable(
                 name: "SanPhamKhuyenMais");

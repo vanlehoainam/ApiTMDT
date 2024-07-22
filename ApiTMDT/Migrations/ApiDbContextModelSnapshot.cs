@@ -425,26 +425,28 @@ namespace ApiTMDT.Migrations
 
             modelBuilder.Entity("ApiTMDT.Models.SanPhamKhuyenMai", b =>
                 {
+                    b.Property<int>("MaSPKM")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaSPKM"), 1L, 1);
+
                     b.Property<int>("MaKM")
                         .HasColumnType("int");
 
                     b.Property<int>("MaSP")
                         .HasColumnType("int");
 
-                    b.Property<int>("MaSPKM")
+                    b.Property<int?>("SanPhamKhuyenMaiMaSPKM")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SanPhamKhuyenMaiMaKM")
-                        .HasColumnType("int");
+                    b.HasKey("MaSPKM");
 
-                    b.Property<int?>("SanPhamKhuyenMaiMaSP")
-                        .HasColumnType("int");
-
-                    b.HasKey("MaKM", "MaSP");
+                    b.HasIndex("MaKM");
 
                     b.HasIndex("MaSP");
 
-                    b.HasIndex("SanPhamKhuyenMaiMaKM", "SanPhamKhuyenMaiMaSP");
+                    b.HasIndex("SanPhamKhuyenMaiMaSPKM");
 
                     b.ToTable("SanPhamKhuyenMais");
                 });
@@ -543,6 +545,21 @@ namespace ApiTMDT.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("SanPhamKhuyenMai", b =>
+                {
+                    b.Property<int>("MaKM")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaSP")
+                        .HasColumnType("int");
+
+                    b.HasKey("MaKM", "MaSP");
+
+                    b.HasIndex("MaSP");
+
+                    b.ToTable("SanPhamKhuyenMai");
                 });
 
             modelBuilder.Entity("ApiTMDT.Models.BinhLuan", b =>
@@ -653,24 +670,41 @@ namespace ApiTMDT.Migrations
             modelBuilder.Entity("ApiTMDT.Models.SanPhamKhuyenMai", b =>
                 {
                     b.HasOne("ApiTMDT.Models.KhuyenMai", "KhuyenMai")
-                        .WithMany("SanPhamKhuyenMais")
+                        .WithMany()
                         .HasForeignKey("MaKM")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ApiTMDT.Models.SanPhamModel", "SanPham")
-                        .WithMany("SanPhamKhuyenMais")
+                        .WithMany()
                         .HasForeignKey("MaSP")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ApiTMDT.Models.SanPhamKhuyenMai", null)
                         .WithMany("SanPhamKhuyenMais")
-                        .HasForeignKey("SanPhamKhuyenMaiMaKM", "SanPhamKhuyenMaiMaSP");
+                        .HasForeignKey("SanPhamKhuyenMaiMaSPKM");
 
                     b.Navigation("KhuyenMai");
 
                     b.Navigation("SanPham");
+                });
+
+            modelBuilder.Entity("SanPhamKhuyenMai", b =>
+                {
+                    b.HasOne("ApiTMDT.Models.KhuyenMai", null)
+                        .WithMany()
+                        .HasForeignKey("MaKM")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_SanPhamKhuyenMai_KhuyenMai_MaKM");
+
+                    b.HasOne("ApiTMDT.Models.SanPhamModel", null)
+                        .WithMany()
+                        .HasForeignKey("MaSP")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_SanPhamKhuyenMai_SanPhamModel_MaSP");
                 });
 
             modelBuilder.Entity("ApiTMDT.Models.GioHang", b =>
@@ -692,11 +726,6 @@ namespace ApiTMDT.Migrations
                     b.Navigation("HoaDons");
                 });
 
-            modelBuilder.Entity("ApiTMDT.Models.KhuyenMai", b =>
-                {
-                    b.Navigation("SanPhamKhuyenMais");
-                });
-
             modelBuilder.Entity("ApiTMDT.Models.SanPhamKhuyenMai", b =>
                 {
                     b.Navigation("SanPhamKhuyenMais");
@@ -709,8 +738,6 @@ namespace ApiTMDT.Migrations
                     b.Navigation("ChiTietGioHang");
 
                     b.Navigation("ChiTietHoaDons");
-
-                    b.Navigation("SanPhamKhuyenMais");
                 });
 #pragma warning restore 612, 618
         }

@@ -13,7 +13,7 @@ namespace ApiTMDT.Service
             _context = context;
         }
 
-        public async Task<List<HopDongLaoDong>> GetAllHopDongLaoDongsAsync(int pageNumber = 1, int pageSize = 5)
+        public async Task<List<HopDongLaoDong>> GetAllHopDongLaoDongsAsync(int pageNumber = 1, int pageSize = 10)
         {
             return await _context.HopDongLaoDong
                 .Skip((pageNumber - 1) * pageSize)

@@ -19,7 +19,7 @@ namespace ApiTMDT.Service
             _context = context;
         }
 
-        public async Task<List<NhanVien>> GetAllNhanViensAsync(int pageNumber = 1, int pageSize = 5)
+        public async Task<List<NhanVien>> GetAllNhanViensAsync(int pageNumber = 1, int pageSize = 10)
         {
             return await _context.NhanVien
                .Include(nv => nv.TrinhDoHocVan)

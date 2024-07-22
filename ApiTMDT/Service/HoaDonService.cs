@@ -17,7 +17,7 @@ namespace ApiTMDT.Service
             _context = context;
         }
 
-        public async Task<List<HoaDon>> GetAllHoaDonsAsync(int pageNumber = 1, int pageSize = 5)
+        public async Task<List<HoaDon>> GetAllHoaDonsAsync(int pageNumber = 1, int pageSize = 10)
         {
             return await _context.HoaDons
                 .Include(hd => hd.KhachHang)

@@ -36,19 +36,7 @@ namespace Data
                .HasMany(g => g.ChiTietGioHangs)
                .WithOne(ct => ct.GioHang)
                .HasForeignKey(ct => ct.GioHangId);
-
-            modelBuilder.Entity<SanPhamKhuyenMai>()
-               .HasKey(spkm => new { spkm.MaKM, spkm.MaSP });
-
-            modelBuilder.Entity<SanPhamKhuyenMai>()
-                .HasOne(spkm => spkm.KhuyenMai)
-                .WithMany(km => km.SanPhamKhuyenMais)
-                .HasForeignKey(spkm => spkm.MaKM);
-
-            modelBuilder.Entity<SanPhamKhuyenMai>()
-                .HasOne(spkm => spkm.SanPham)
-                .WithMany(sp => sp.SanPhamKhuyenMais)
-                .HasForeignKey(spkm => spkm.MaSP);
+            
 
             modelBuilder.Entity<BinhLuan>()
                 .HasOne(bl => bl.KhachHang)
@@ -59,6 +47,26 @@ namespace Data
                 .HasOne(bl => bl.SanPham)
                 .WithMany(sp => sp.BinhLuans)
                 .HasForeignKey(bl => bl.MaSP);
+
+
+            modelBuilder.Entity<KhuyenMai>()
+                .HasMany(km => km.SanPhamModels)
+                .WithMany(sp => sp.KhuyenMais)
+                .UsingEntity<Dictionary<string, object>>(
+                    "SanPhamKhuyenMai",
+                    j => j
+                        .HasOne<SanPhamModel>()
+                        .WithMany()
+                        .HasForeignKey("MaSP")
+                        .HasConstraintName("FK_SanPhamKhuyenMai_SanPhamModel_MaSP")
+                        .OnDelete(DeleteBehavior.Cascade),
+                    j => j
+                        .HasOne<KhuyenMai>()
+                        .WithMany()
+                        .HasForeignKey("MaKM")
+                        .HasConstraintName("FK_SanPhamKhuyenMai_KhuyenMai_MaKM")
+                        .OnDelete(DeleteBehavior.Cascade)
+                );
         }
     }
 }
