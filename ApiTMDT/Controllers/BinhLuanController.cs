@@ -19,9 +19,9 @@ namespace ApiTMDT.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 5)
+        public async Task<IActionResult> GetAll()
         {
-            var binhLuans = await _binhLuanService.GetAllBinhLuansAsync(pageNumber, pageSize);
+            var binhLuans = await _binhLuanService.GetAllBinhLuansAsync();
             return Ok(binhLuans);
         }
 

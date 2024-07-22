@@ -24,9 +24,9 @@ namespace ApiTMDT.Controllers
         }
 
         [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll(int pageNumber = 1, int pageSize = 5)
+        public async Task<IActionResult> GetAll()
         {
-            var hoaDons = await _hoaDonService.GetAllHoaDonsAsync(pageNumber, pageSize);
+            var hoaDons = await _hoaDonService.GetAllHoaDonsAsync();
             return Ok(hoaDons);
         }
 

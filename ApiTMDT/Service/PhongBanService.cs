@@ -1,7 +1,6 @@
 ﻿using ApiTMDT.Models;
 using Data;
-using ApiTMDT.Repositories;
-using ApiTMDT.Helpers;
+
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Linq;

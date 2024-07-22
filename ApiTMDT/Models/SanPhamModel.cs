@@ -1,7 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
 using System.Text.Json.Serialization;
+
 namespace ApiTMDT.Models
 {
     public class SanPhamModel
@@ -16,21 +17,31 @@ namespace ApiTMDT.Models
         public decimal Gia { get; set; }
 
         public string Anh_SP { get; set; }
+
         [Required]
         public int SoLuong { get; set; }
+
         [Required]
         public string MoTa { get; set; }
+
         public string GhiChu { get; set; }
 
         [NotMapped]
         public IFormFile ImageFile { get; set; }
+
         [JsonIgnore]
         public virtual ICollection<ChiTietHoaDon> ChiTietHoaDons { get; set; }
+
         [JsonIgnore]
         public virtual ICollection<ChiTietGioHang> ChiTietGioHang { get; set; }
+
         [JsonIgnore]
         public virtual ICollection<BinhLuan> BinhLuans { get; set; }
+
+        [ForeignKey("KhuyenMai")]
+        public int? MaKM { get; set; }
+
         [JsonIgnore]
-        public virtual ICollection<SanPhamKhuyenMai> SanPhamKhuyenMais { get; set; }
+        public virtual KhuyenMai KhuyenMai { get; set; }
     }
 }

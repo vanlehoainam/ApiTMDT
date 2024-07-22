@@ -38,6 +38,7 @@ namespace ApiTMDT.Controllers
                 Gia = createSP.Gia,
                 SoLuong = createSP.SoLuong,
                 GhiChu = createSP.GhiChu ,
+                MoTa = createSP.MoTa ,
                 ImageFile = createSP.ImageFile
             };
 
@@ -114,6 +115,7 @@ namespace ApiTMDT.Controllers
             public string GhiChu { get; set; }
 
             public IFormFile ImageFile { get; set; }
+            public string MoTa { get; set; }
         }
     }
 }

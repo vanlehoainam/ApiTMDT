@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+
 namespace ApiTMDT.Models
 {
     public class KhuyenMai
@@ -27,9 +28,9 @@ namespace ApiTMDT.Models
 
         [Required]
         [StringLength(50)]
-        public string TrangThai { get; set; } 
+        public string TrangThai { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<SanPhamKhuyenMai> SanPhamKhuyenMais { get; set; }
+        public virtual ICollection<SanPhamModel> SanPhamModels { get; set; }
     }
 }
