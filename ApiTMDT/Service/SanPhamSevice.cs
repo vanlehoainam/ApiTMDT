@@ -59,7 +59,7 @@ namespace ApiTMDT.Service
                         await imageFile.CopyToAsync(stream);
                     }
 
-                    sanPham.Anh_SP = $"/images/{fileName}";
+                    sanPham.Anh_SP = $"D:\\3S HUE\\APITMDT\\ApiTMDT\\ApiTMDT\\Data\\images\\{fileName}";
                 }
                 else
                 {

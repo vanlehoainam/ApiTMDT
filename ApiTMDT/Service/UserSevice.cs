@@ -50,13 +50,21 @@ namespace ApiTMDT.Service
                 return (null, "Mật khẩu đăng nhập không chính xác.");
             }
 
-            return (user, "Đăng nhập thành công.");
+            string roleMessage = user.Role switch
+            {
+                "Admin" => "Đăng nhập thành công với vai trò Admin.",
+                "NhanVien" => "Đăng nhập thành công với vai trò Nhân Viên.",
+                "KhachHang" => "Đăng nhập thành công với vai trò Khách Hàng.",
+                _ => "Đăng nhập thành công."
+            };
+
+            return (user, roleMessage);
         }
 
         public async Task<(UserModel user, string message)> CreateUserAsync(UserModel user)
         {
             var existingUserByUsername = await _context.Users
-           .FirstOrDefaultAsync(u => u.UserName == user.UserName);
+                .FirstOrDefaultAsync(u => u.UserName == user.UserName);
 
             if (existingUserByUsername != null)
             {
@@ -70,6 +78,7 @@ namespace ApiTMDT.Service
             {
                 return (null, "Email đã tồn tại.");
             }
+
             user.Password = PasswordHelper.HashPassword(user.Password);
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -105,11 +114,13 @@ namespace ApiTMDT.Service
             {
                 Id = existingUser.Id,
                 UserName = existingUser.UserName,
-                Email = existingUser.Email
+                Email = existingUser.Email,
+                Role = existingUser.Role // Bao gồm vai trò hiện tại
             };
 
             existingUser.UserName = userUpdate.UserName;
             existingUser.Email = userUpdate.Email;
+            existingUser.Role = userUpdate.Role; // Cập nhật vai trò
 
             _context.Users.Update(existingUser);
             await _context.SaveChangesAsync();

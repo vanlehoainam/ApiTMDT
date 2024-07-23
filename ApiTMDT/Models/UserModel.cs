@@ -20,5 +20,7 @@ namespace ApiTMDT.Models
         public string Password { get; set; }
         
         public string Phone {  get; set; }
+
+        public string Role { get; set; }
     }
 }

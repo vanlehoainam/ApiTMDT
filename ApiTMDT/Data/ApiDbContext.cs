@@ -20,8 +20,7 @@ namespace Data
         public DbSet<ChiTietHoaDon> ChiTietHoaDons { get; set; }
         public DbSet<GioHang> GioHangs { get; set; }
         public DbSet<ChiTietGioHang> ChiTietGioHangs { get; set; }
-        public DbSet<KhuyenMai> KhuyenMais { get; set; }
-        public DbSet<SanPhamKhuyenMai> SanPhamKhuyenMais { get; set; }
+        public DbSet<KhuyenMai> KhuyenMais { get; set; }      
         public DbSet<BinhLuan> BinhLuans { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
