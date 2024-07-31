@@ -70,7 +70,7 @@ namespace ApiTMDT.Controllers
 
             return Ok(new
             {
-                originalData = result.originalHopDongLaoDong,
+                
                 data = result.updatedHopDongLaoDong,
                 message = result.message
             });

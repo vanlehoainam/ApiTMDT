@@ -67,8 +67,7 @@ namespace ApiTMDT.Controllers
 
             return Ok(new
             {
-                originalData = result.originalSanPham,
-                data = result.updatedSanPham,
+               data = result.updatedSanPham,
                 message = result.message
             });
         }

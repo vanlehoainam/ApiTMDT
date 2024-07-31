@@ -18,16 +18,17 @@ namespace ApiTMDT.Service
             _context = context;
         }
 
-        public async Task<List<SanPhamModel>> GetAllSanPhamsAsync(int pageNumber = 1, int pageSize = 10)
+        public async Task<List<SanPhamModel>> GetAllSanPhamsAsync(/*int pageNumber = 1, int pageSize = 10*/)
         {
             return await _context.SanPham
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
+                /*.Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)*/
                 .ToListAsync();
         }
 
         public async Task<(SanPhamModel sanPham, string message)> CreateSanPhamAsync(SanPhamModel sanPham, IFormFile imageFile)
         {
+          
             var existingSanPhamByName = await _context.SanPham
                 .FirstOrDefaultAsync(sp => sp.Ten_SP == sanPham.Ten_SP);
 
@@ -52,14 +53,37 @@ namespace ApiTMDT.Service
                     }
 
                     var fileName = $"{Guid.NewGuid()}{fileExtension}";
-                    var filePath = Path.Combine("Data/images", fileName);
+                    var filePath = Path.Combine("Data", "images", fileName);
 
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    try
                     {
-                        await imageFile.CopyToAsync(stream);
-                    }
 
-                    sanPham.Anh_SP = $"D:\\3S HUE\\APITMDT\\ApiTMDT\\ApiTMDT\\Data\\images\\{fileName}";
+                        var directoryPath = Path.GetDirectoryName(filePath);
+                        if (!Directory.Exists(directoryPath))
+                        {
+                            Directory.CreateDirectory(directoryPath);
+                        }
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await imageFile.CopyToAsync(stream);
+                        }
+
+                        
+                        sanPham.Anh_SP = $"/{fileName}";
+                    }
+                    catch (IOException ioEx)
+                    {
+                        return (null, $"Lỗi khi lưu ảnh: {ioEx.Message}");
+                    }
+                    catch (UnauthorizedAccessException uaEx)
+                    {
+                        return (null, $"Quyền truy cập bị từ chối: {uaEx.Message}");
+                    }
+                    catch (Exception ex)
+                    {
+                        return (null, $"Lỗi không xác định: {ex.Message}");
+                    }
                 }
                 else
                 {
@@ -67,11 +91,13 @@ namespace ApiTMDT.Service
                 }
             }
 
+
             _context.SanPham.Add(sanPham);
             await _context.SaveChangesAsync();
 
-            return (sanPham, "Tạo sản phẩm thành công.");
+            return (sanPham, "Sản phẩm đã được tạo thành công.");
         }
+
         public async Task<(SanPhamModel originalSanPham, SanPhamModel updatedSanPham, string message)> UpdateSanPhamAsync(int MaSP, SanPhamModel sanPhamUpdate)
         {
             var existingSanPham = await _context.SanPham.FindAsync(MaSP);

@@ -63,7 +63,8 @@ namespace ApiTMDT.Service
                 MaPB = existingPhongBan.MaPB,
                 TenPB = existingPhongBan.TenPB,
                 SDT = existingPhongBan.SDT,
-               
+                DiaChi = existingPhongBan.DiaChi,
+
             };
 
             existingPhongBan.TenPB = phongBanUpdate.TenPB;

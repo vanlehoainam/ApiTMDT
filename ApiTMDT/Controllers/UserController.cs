@@ -81,8 +81,7 @@ namespace ApiTMDT.Controllers
             }
 
             return Ok(new
-            {
-                originalData = result.originalUser,
+            {                
                 data = result.updatedUser,
                 message = result.message
             });

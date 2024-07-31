@@ -34,7 +34,8 @@ namespace ApiTMDT.Controllers
                 SDT = createPhongBan.SDT,
                 Email = createPhongBan.Email,
                 NgayThanhLap =  createPhongBan.NgayThanhLap,
-                GhiChu = createPhongBan.GhiChu
+                GhiChu = createPhongBan.GhiChu ,
+                DiaChi = createPhongBan.DiaChi ,
             };
 
             var result = await _phongBanService.CreatePhongBanAsync(phongBan);
@@ -63,7 +64,6 @@ namespace ApiTMDT.Controllers
 
             return Ok(new
             {
-                originalData = result.originalPhongBan,
                 data = result.updatedPhongBan,
                 message = result.message
             });
@@ -96,6 +96,8 @@ namespace ApiTMDT.Controllers
             [DataType(DataType.Date)]
             public DateTime? NgayThanhLap { get; set; }
             public string GhiChu { get; set; }
+            public string DiaChi { get; set; }
+
 
         }
     }

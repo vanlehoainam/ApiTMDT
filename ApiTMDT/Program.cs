@@ -16,7 +16,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
-        policy => policy.WithOrigins("http://localhost:5500", "http://127.0.0.1:5500") // Thay đổi URL này thành nguồn gốc của trang web của bạn
+        policy => policy.WithOrigins("http://localhost:5500", "http://127.0.0.1:5500", "http://localhost:4200") // Thay đổi URL này thành nguồn gốc của trang web của bạn
                         .AllowAnyHeader()
                         .AllowAnyMethod());
 });

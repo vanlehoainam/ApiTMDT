@@ -84,7 +84,7 @@ namespace ApiTMDT.Controllers
 
             return Ok(new
             {
-                originalData = result.originalHoaDon,
+                
                 data = result.updatedHoaDon,
                 message = result.message
             });

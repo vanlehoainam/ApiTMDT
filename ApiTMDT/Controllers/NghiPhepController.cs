@@ -62,7 +62,6 @@ namespace ApiTMDT.Controllers
 
             return Ok(new
             {
-                originalData = result.originalNghiPhep,
                 data = result.updatedNghiPhep,
                 message = result.message
             });

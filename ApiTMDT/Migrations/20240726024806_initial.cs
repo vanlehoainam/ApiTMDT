@@ -121,7 +121,8 @@ namespace ApiTMDT.Migrations
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -222,38 +223,6 @@ namespace ApiTMDT.Migrations
                         principalTable: "SanPham",
                         principalColumn: "MaSP",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SanPhamKhuyenMais",
-                columns: table => new
-                {
-                    MaSPKM = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MaKM = table.Column<int>(type: "int", nullable: false),
-                    MaSP = table.Column<int>(type: "int", nullable: false),
-                    SanPhamKhuyenMaiMaSPKM = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SanPhamKhuyenMais", x => x.MaSPKM);
-                    table.ForeignKey(
-                        name: "FK_SanPhamKhuyenMais_KhuyenMais_MaKM",
-                        column: x => x.MaKM,
-                        principalTable: "KhuyenMais",
-                        principalColumn: "MaKM",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SanPhamKhuyenMais_SanPham_MaSP",
-                        column: x => x.MaSP,
-                        principalTable: "SanPham",
-                        principalColumn: "MaSP",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SanPhamKhuyenMais_SanPhamKhuyenMais_SanPhamKhuyenMaiMaSPKM",
-                        column: x => x.SanPhamKhuyenMaiMaSPKM,
-                        principalTable: "SanPhamKhuyenMais",
-                        principalColumn: "MaSPKM");
                 });
 
             migrationBuilder.CreateTable(
@@ -432,21 +401,6 @@ namespace ApiTMDT.Migrations
                 name: "IX_SanPhamKhuyenMai_MaSP",
                 table: "SanPhamKhuyenMai",
                 column: "MaSP");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SanPhamKhuyenMais_MaKM",
-                table: "SanPhamKhuyenMais",
-                column: "MaKM");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SanPhamKhuyenMais_MaSP",
-                table: "SanPhamKhuyenMais",
-                column: "MaSP");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SanPhamKhuyenMais_SanPhamKhuyenMaiMaSPKM",
-                table: "SanPhamKhuyenMais",
-                column: "SanPhamKhuyenMaiMaSPKM");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -468,9 +422,6 @@ namespace ApiTMDT.Migrations
 
             migrationBuilder.DropTable(
                 name: "SanPhamKhuyenMai");
-
-            migrationBuilder.DropTable(
-                name: "SanPhamKhuyenMais");
 
             migrationBuilder.DropTable(
                 name: "Users");

@@ -60,7 +60,7 @@ namespace ApiTMDT.Controllers
 
             return Ok(new
             {
-                originalData = result.originalHocVan,
+                
                 data = result.updatedHocVan,
                 message = result.message
             });

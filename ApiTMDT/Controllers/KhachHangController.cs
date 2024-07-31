@@ -74,7 +74,7 @@ namespace ApiTMDT.Controllers
 
             return Ok(new
             {
-                originalData = result.originalKhachHang,
+              
                 data = result.updatedKhachHang,
                 message = result.message
             });

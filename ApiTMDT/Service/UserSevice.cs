@@ -1,18 +1,13 @@
 ﻿using ApiTMDT.Models;
 using Data;
-
 using ApiTMDT.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Linq;
-using EO.Base;
-using Microsoft.AspNet.Identity;
-using static ApiTMDT.Service.UserService;
 
 namespace ApiTMDT.Service
 {
-  
-    public class UserService 
+    public class UserService
     {
         private readonly ApiDbContext _context;
 
@@ -29,15 +24,15 @@ namespace ApiTMDT.Service
                 .ToListAsync();
         }
 
-        public async Task<(UserModel user, string message)> LoginAsync(string emailorusername, string password)
+        public async Task<(UserModel user, string message)> LoginAsync(string emailOrUsername, string password)
         {
-            if (string.IsNullOrWhiteSpace(emailorusername) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(emailOrUsername) || string.IsNullOrWhiteSpace(password))
             {
                 return (null, "Email/Username và mật khẩu không được để trống.");
             }
 
             var user = await _context.Users
-                .SingleOrDefaultAsync(x => x.Email == emailorusername || x.UserName == emailorusername);
+                .SingleOrDefaultAsync(x => x.Email == emailOrUsername || x.UserName == emailOrUsername);
 
             if (user == null)
             {
@@ -86,41 +81,49 @@ namespace ApiTMDT.Service
             return (user, "Tạo user thành công.");
         }
 
-        public async Task<(UserModel originalUser, UserModel updatedUser, string message)> UpdateUserAsync(int Id, UserModel userUpdate)
+        public async Task<(UserModel originalUser, UserModel updatedUser, string message)> UpdateUserAsync(int id, UserModel userUpdate)
         {
-            var existingUser = await _context.Users.FindAsync(Id);
+            // Tìm kiếm người dùng hiện tại
+            var existingUser = await _context.Users.FindAsync(id);
             if (existingUser == null)
             {
                 return (null, null, "User không tồn tại.");
             }
 
+            // Kiểm tra nếu có user với cùng username hoặc email nhưng khác id
             var userWithSameUsername = await _context.Users
-                .FirstOrDefaultAsync(u => u.UserName == userUpdate.UserName && u.Id != Id);
-
+                .FirstOrDefaultAsync(u => u.UserName == userUpdate.UserName && u.Id != id);
             if (userWithSameUsername != null)
             {
                 return (null, null, "Username đã tồn tại.");
             }
 
             var userWithSameEmail = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == userUpdate.Email && u.Id != Id);
-
+                .FirstOrDefaultAsync(u => u.Email == userUpdate.Email && u.Id != id);
             if (userWithSameEmail != null)
             {
                 return (null, null, "Email đã tồn tại.");
             }
 
+            // Lưu trữ thông tin người dùng gốc
             var originalUser = new UserModel
             {
                 Id = existingUser.Id,
+                FullName = existingUser.FullName,
                 UserName = existingUser.UserName,
                 Email = existingUser.Email,
-                Role = existingUser.Role // Bao gồm vai trò hiện tại
+                Role = existingUser.Role,
+                Phone = existingUser.Phone,
+                Password =  existingUser.Password,
             };
 
+            // Cập nhật thông tin người dùng
+            existingUser.FullName = userUpdate.FullName;
             existingUser.UserName = userUpdate.UserName;
             existingUser.Email = userUpdate.Email;
-            existingUser.Role = userUpdate.Role; // Cập nhật vai trò
+            existingUser.Phone= userUpdate.Phone;
+            existingUser.Password= userUpdate.Password;
+            existingUser.Role = userUpdate.Role;
 
             _context.Users.Update(existingUser);
             await _context.SaveChangesAsync();
@@ -136,7 +139,7 @@ namespace ApiTMDT.Service
                 return new DeleteUserResponse
                 {
                     Success = false,
-                    Message = "Không tìm thấy user"
+                    Message = "Không tìm thấy user."
                 };
             }
 
@@ -146,7 +149,7 @@ namespace ApiTMDT.Service
             return new DeleteUserResponse
             {
                 Success = true,
-                Message = "Xóa thành công"
+                Message = "Xóa user thành công."
             };
         }
 
